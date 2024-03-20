@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import './Login.css'
 import EmailIcon from '../../assets/email.png'
 import UserIcon from '../../assets/person.png'
 import PasswordIcon from '../../assets/password.png'
+import {setAccessToken, setRefreshToken} from '../../utils/tokenStorage'
 
 const Login = () => {
 
@@ -20,8 +21,12 @@ const Login = () => {
             body: JSON.stringify({ name: name, username: email, password: password})
         })
           .then(response => response.json())
-          //.then(data => localStorage.setItem('jwt-token', data.accesstoken))
-          //.catch(error => setMessage("Error loading message.\n" + error));
+          .then(data => {
+            setAccessToken(data.access_token);
+            setRefreshToken(data.refresh_token);
+            navigate('/dashboard')
+        })
+          .catch(() => console.log('failed register fetch'));
       };
 
    const login = async () => {
@@ -36,8 +41,11 @@ const Login = () => {
             else {
                 return response.json()
             }})
-        .then(data => localStorage.setItem('jwt-token', JSON.stringify(data.access_token)))
-        .catch(error => console.log('failed fetch'))
+        .then(data => {
+            setAccessToken(data.access_token);
+            setRefreshToken(data.refresh_token);
+        })
+        .catch(() => console.log('failed login fetch'))
         navigate('/dashboard');
     };
 
