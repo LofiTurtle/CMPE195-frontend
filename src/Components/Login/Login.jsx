@@ -4,7 +4,6 @@ import './Login.css'
 import EmailIcon from '../../assets/email.png'
 import UserIcon from '../../assets/person.png'
 import PasswordIcon from '../../assets/password.png'
-import {setAccessToken, setRefreshToken} from '../../utils/tokenStorage'
 
 const Login = () => {
 
@@ -20,10 +19,13 @@ const Login = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: name, username: email, password: password})
         })
-          .then(response => response.json())
-          .then(data => {
-            setAccessToken(data.access_token);
-            setRefreshToken(data.refresh_token);
+          .then(response => {
+            if (response.status != 201) {
+                console.log()
+                throw new Error()
+            }
+          })
+          .then(() => {
             navigate('/dashboard')
         })
           .catch(() => console.log('failed register fetch'));
@@ -36,17 +38,11 @@ const Login = () => {
         body: JSON.stringify({username: email, password: password})
     })
         .then(response => {
-            if(response.status == 401) {
-                throw new Error()} 
-            else {
-                return response.json()
-            }})
-        .then(data => {
-            setAccessToken(data.access_token);
-            setRefreshToken(data.refresh_token);
-        })
+            if(response.status != 200) {
+                throw new Error()}
+            })
+        .then(() => navigate('/dashboard'))
         .catch(() => console.log('failed login fetch'))
-        navigate('/dashboard');
     };
 
    function clearFields() {

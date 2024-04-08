@@ -2,21 +2,18 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SteamLoginIcon from '../assets/login-steam.png'
 import './Dashboard.css'
-import { deleteTokens } from '../utils/tokenStorage';
-import { authenticatedFetch } from '../utils/apiUtils'
 
 const Dashboard = () => {
   const [message, setMessage] = useState('Loading...');
   const navigate = useNavigate();
 
   const logout = async () => {
-    deleteTokens();
     navigate('/')
   }
 
   useEffect(() => {
     const fetchMe = async () => {
-      authenticatedFetch('/api/me')
+      fetch('/api/me')
       .then(response => {
         if (response.status != 200) {
           navigate('/login');

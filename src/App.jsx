@@ -1,7 +1,6 @@
 import './App.css'
 import { BrowserRouter as Router, Route, Navigate, Routes } from 'react-router-dom';
 import Login from './Components/Login/Login'
-import PrivateRoute from './Components/PrivateRoute'
 import Dashboard from './Components/Dashboard'
 
 function App() {
@@ -15,9 +14,7 @@ function App() {
           <Route
           path="/dashboard"
           element={
-            <PrivateRoute>
-              <Dashboard/>
-            </PrivateRoute>
+            <Dashboard/>
           }
         />
           <Route path="/" element={<Navigate replace to="/login" />} />
