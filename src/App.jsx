@@ -1,26 +1,29 @@
-import { useState } from 'react'
 import './App.css'
+import { BrowserRouter as Router, Route, Navigate, Routes } from 'react-router-dom';
+import Login from './Components/Login/Login'
+import Dashboard from './Components/Dashboard'
 
 function App() {
-  const [message, setMessage] = useState("Click to load data");
-
-  const fetchMessage = async () => {
-    setMessage("Loading...");
-    fetch("/api/hello")
-      .then(response => response.json())
-      .then(data => setMessage(data.data))
-      .catch(error => setMessage("Error loading message.\n" + error));
-  };
 
   return (
-    <>
-      <div className="card">
-        <button onClick={fetchMessage}>
-          {message}
-        </button>
-      </div>
-    </>
+
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login/>} />
+          {/* <PrivateRoute path="/dashboard" component={<Dashboard/>} /> */}
+          <Route
+          path="/dashboard"
+          element={
+            <Dashboard/>
+          }
+        />
+          <Route path="/" element={<Navigate replace to="/login" />} />
+        </Routes>
+      </Router>
   )
 }
 
 export default App
+
+
+
