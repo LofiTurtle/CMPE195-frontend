@@ -23,12 +23,13 @@ const Dashboard = () => {
       fetch('/api/me')
         .then(response => {
           if (response.status != 200) {
-            navigate('/login');
+            throw new Error();
           } else {
             return response.json();
           }
         })
         .then(data => setMessage(`Hello ${data.username}`))
+        .catch(() => navigate('/login'));
     };
 
     fetchMe();
