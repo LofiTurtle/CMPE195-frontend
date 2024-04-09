@@ -77,7 +77,7 @@ export function SignupForm(props) {
         <p style={{ color: "red" }}>Passwords don't match Please try again</p>
       )}
       <Marginer direction="vertical" margin={10} />
-      <SubmitButton type="submit" onClick={signUp}>Signup</SubmitButton>
+      <SubmitButton type="submit" onClick={signUp}>Sign up</SubmitButton>
       <Marginer direction="vertical" margin="1em" />
       <MutedLink href="#">
         Already have an account?
