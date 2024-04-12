@@ -1,7 +1,20 @@
 import './App.css'
 import { BrowserRouter as Router, Route, Navigate, Routes } from 'react-router-dom';
-import Login from './Components/Login/Login'
 import Dashboard from './Components/Dashboard'
+import React from 'react';
+import styled from "styled-components";
+import { AccountBox } from "./Components/accountBox";
+
+
+
+const AppContainer = styled.div`
+  width: 100%;
+  height: 150%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 function App() {
 
@@ -9,8 +22,8 @@ function App() {
 
       <Router>
         <Routes>
-          <Route path="/login" element={<Login/>} />
-          {/* <PrivateRoute path="/dashboard" component={<Dashboard/>} /> */}
+          <Route path="/login" element={<AppContainer><AccountBox/></AppContainer>}/>
+          {/* <PrivateRoute path="/dashboard" component={<Dashboard/>} /> */} 
           <Route
           path="/dashboard"
           element={
@@ -24,6 +37,3 @@ function App() {
 }
 
 export default App
-
-
-
