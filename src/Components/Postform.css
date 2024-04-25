@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Ensures all items stretch to fill the container */
+  }
+
+  .left-header {
+    padding: 10px;
+    background-color: #f0f0f0;
+  }
+  

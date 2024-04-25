@@ -1,6 +1,8 @@
 import './App.css'
 import { BrowserRouter as Router, Route, Navigate, Routes } from 'react-router-dom';
 import Dashboard from './Components/Dashboard'
+import PostList from './Components/Postlist'
+import Post from './Components/Post'
 import React from 'react';
 import styled from "styled-components";
 import { AccountBox } from "./Components/accountBox";
@@ -29,7 +31,9 @@ function App() {
           element={
             <Dashboard/>
           }
-        />
+          />
+          <Route path="/posts/:postId" element={<Post />}/>
+          <Route path="/test-community" element={<PostList communityId={'1234'}/>}/>
           <Route path="/" element={<Navigate replace to="/login" />} />
         </Routes>
       </Router>
