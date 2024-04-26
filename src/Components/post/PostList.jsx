@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Postlist.css'
+import './PostList.css'
 
 function PostList({ communityId }) {
   const [posts, setPosts] = useState([]);
@@ -8,12 +8,12 @@ function PostList({ communityId }) {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(`/posts?communityId=${communityId}`);
+        const response = await fetch(`/api/community/${communityId}/posts`);
         if (!response.ok) {
           throw new Error('Failed to fetch posts');
         }
         const data = await response.json();
-        setPosts(data.posts);
+        setPosts(data.data);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
@@ -30,8 +30,10 @@ function PostList({ communityId }) {
           <Link to={`/posts/${post.id}`}>
             <h3>{post.title}</h3>
           </Link>
-          <p>User ID: {post.userId}</p>
-          <p className="post-content">{post.content.substring(0, 100)}...</p>
+          <Link to={`/user/${post.author.id}`}>
+            <p>{post.author.username}</p>
+          </Link>
+          <p className="post-content">{post.content.substring(0, 100)} {post.content.length > 100 ? '...' : ''}</p>
           <hr />
         </div>
       ))}

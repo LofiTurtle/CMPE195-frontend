@@ -1,32 +1,43 @@
-import React, { useState } from 'react';
-import './Postform.css'
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import './PostForm.css'
 
 const PostForm = () => {
+  const { communityId } = useParams();
+
   const [content, setContent] = useState('');
-  const [community_id, setCommunity] = useState('1234');
-  const [author_id, setAuthor] = useState('1234');
+  const [author_id, setAuthor] = useState('');
   const [title, setTitle] = useState('');
+  const [community, setCommunity] = useState({name: 'Loading...', num_users: 0});
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`/api/community/${communityId}`)
+    .then(response => response.json())
+    .then(data => setCommunity(data.data))
+  }, [communityId])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
         title: title,
         author_id: author_id,
-        community_id: community_id,
+        community_id: community.id,
         content: content
     };
-    fetch('/post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body : JSON.stringify(data) })
+    fetch('/api/posts/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body : JSON.stringify(data) })
       .then(response => {
-        if (response.status != 200) {
+        if (!response.ok) {
           throw new Error();
         }
       })
-      .catch(() => console.log('Error logging out.'))
+      .then(navigate(`/community/${communityId}`))
+      .catch(() => console.log('Error creating post.'))
   };
 
   return (
     <div className="container">
-      <h1 className="left-header">{community_id}</h1>
+      <h1 className="left-header">{community.name}</h1>
       <h2 className="left-header">Create a New Post</h2>
       <form onSubmit={handleSubmit}>
         <input
