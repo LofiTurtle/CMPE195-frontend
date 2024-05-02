@@ -1,30 +1,45 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
+  const [loggedInUserId, setLoggedInUserId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`/api/users/${userId}`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Error fetching user');
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`/api/users/${userId}`);
+        if (!response.ok) throw new Error('Failed to fetch user profile');
+        const data = await response.json();
+        setUser(data.data);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
       }
-      return response.json();
-    })
-    .then((data) => {
-      setUser(data.data)
-    })
-    .catch(() => {
-      console.log('Error fetching user');
-    });
-  }, [])
+    };
+
+    const fetchLoggedInUser = async () => {
+      try {
+        const response = await fetch('/api/me');
+        if (!response.ok) throw new Error('Failed to fetch logged in user data');
+        const data = await response.json();
+        setLoggedInUserId(data.userId.toString());
+      } catch (error) {
+        console.error('Error fetching logged in user data:', error);
+      }
+    };
+
+    fetchUser();
+    fetchLoggedInUser();
+  }, [userId, navigate]);
+
+  const handleEditProfile = () => {
+    navigate(`/edit-profile/${userId}`);
+  };
 
   if (!user) {
-    return (
-      <h1>Loading user...</h1>
-    )
+    return <h1>Loading user...</h1>;
   }
 
   return (
@@ -39,6 +54,7 @@ const UserProfile = () => {
           <p>Account Username: {account.username}</p>
         </div>
       ))}
+      <button onClick={handleEditProfile}>Edit Profile</button>
     </div>
   );
 }

@@ -20,6 +20,21 @@ const Dashboard = () => {
       .catch(() => console.log('Error logging out.'))
   }
 
+  const viewUserProfile = async () => {
+    try {
+      const response = await fetch('/api/me');
+      if (response.status !== 200) {
+        throw new Error('Failed to fetch user data');
+      }
+      const data = await response.json();
+      navigate(`/user/${data.id}`);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      navigate('/login');
+    }
+  }
+
+
   useEffect(() => {
     const fetchMe = async () => {
       fetch('/api/me')
@@ -44,6 +59,7 @@ const Dashboard = () => {
       <PostList communityId={1}></PostList>
       {/* TODO post list for all followed communities */}
       <button onClick={logout}>Log out</button>
+      <button onClick={viewUserProfile}>View Your Profile</button>
       <div className="steamAuth">
         <a
           className="App-link"
