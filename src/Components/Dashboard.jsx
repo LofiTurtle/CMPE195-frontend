@@ -44,7 +44,7 @@ const Dashboard = () => {
       <PostList communityId={1}></PostList>
       {/* TODO post list for all followed communities */}
       <button onClick={logout}>Log out</button>
-      <div className="steamAuth">
+      {/* <div className="steamAuth">
         <a
           className="App-link"
           href="http://localhost:8080/api/steamlogin"
@@ -53,7 +53,7 @@ const Dashboard = () => {
         >
           <img src={SteamLoginIcon} alt="Steam Login" />
         </a>
-      </div>
+      </div> */}
     </div>
   )
 }

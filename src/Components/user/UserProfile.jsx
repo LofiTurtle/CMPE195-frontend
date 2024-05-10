@@ -1,25 +1,55 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { hasDiscordAccount, getCurrentUserId } from '../../utils';
 
 const UserProfile = () => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
+  const [showDiscordLinkButton, setShowDiscordLinkButton] = useState(false);
+  const [showDiscordDisconnectButton, setShowDiscordDisconnectButton] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`/api/users/${userId}`)
-    .then((response) => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error fetching user');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setUser(data.data)
+      })
+      .catch(() => {
+        console.log('Error fetching user');
+      });
+  }, [userId])
+
+  useEffect(() => {
+    const checkDiscordLinkButton = async () => {
+      const currentUserId = await getCurrentUserId();
+      setShowDiscordLinkButton((user?.id === currentUserId || false) && !hasDiscordAccount(user));
+    };
+
+    const checkDiscordDisconnectButton = async () => {
+      const currentUserId = await getCurrentUserId();
+      setShowDiscordDisconnectButton(user?.id === currentUserId || false);
+    }
+  
+    checkDiscordLinkButton();
+  }, [user]);
+
+  const handleDiscordDisconnect = () => {
+    fetch('/api/discord/disconnect', {method: 'POST'})
+    .then(response => {
       if (!response.ok) {
-        throw new Error('Error fetching user');
+        throw new Error('Error disconnecting Discord account');
       }
-      return response.json();
+      console.log('Disconnected from Discord');
+      navigate(0);  // refresh the page
     })
-    .then((data) => {
-      setUser(data.data)
-    })
-    .catch(() => {
-      console.log('Error fetching user');
-    });
-  }, [])
+    .catch(error => console.log(error));
+  }
 
   if (!user) {
     return (
@@ -29,16 +59,27 @@ const UserProfile = () => {
 
   return (
     <div>
+      <Link to={'/dashboard'}>Go to Dashboard</Link>
       <h1>{user.username}</h1>
       <h2>Bio:</h2>
       <p>{user.profile.bio}</p>
       <br />
       {user.connected_accounts.map((account, index) => (
-        <div key={index}>
+        <div key={index} style={{border: '1px solid black', padding: '10px'}}>
+          <img src={account.profile_picture_url} alt="" />
           <p>Platform: {account.provider}</p>
           <p>Account Username: {account.username}</p>
         </div>
       ))}
+      <br />
+      {showDiscordLinkButton && (
+      <a href="/api/discord/connect">
+        Link your discord account
+      </a>
+      )}
+      {showDiscordDisconnectButton && (
+        <button onClick={handleDiscordDisconnect}>Disconnect Discord Account</button>
+      )}
     </div>
   );
 }

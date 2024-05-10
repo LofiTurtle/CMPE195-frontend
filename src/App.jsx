@@ -32,7 +32,7 @@ function App() {
           <Route path="/posts/:postId" element={<Post />} />
           <Route path="/community/:communityId" element={<Community />}></Route>
           <Route path="/community/:communityId/create-post" element={<PostForm />}></Route>
-          <Route path="/user/:userId" element={<UserProfile />}></Route>
+          <Route path="/users/:userId" element={<UserProfile />}></Route>
           <Route path="/" element={<Navigate replace to="/login" />} />
         </Routes>
       </Router>
