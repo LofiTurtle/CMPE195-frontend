@@ -33,7 +33,7 @@ const UserProfile = () => {
 
     const checkDiscordDisconnectButton = async () => {
       const currentUserId = await getCurrentUserId();
-      setShowDiscordDisconnectButton(user?.id === currentUserId || false);
+      setShowDiscordDisconnectButton((user?.id === currentUserId || false) && hasDiscordAccount(user));
     }
   
     checkDiscordLinkButton();
