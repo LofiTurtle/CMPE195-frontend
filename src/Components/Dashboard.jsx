@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import SteamLoginIcon from '../assets/login-steam.png';
 import PostForm  from './post/PostForm';
 import PostList from './post/PostList';
@@ -7,6 +7,7 @@ import './Dashboard.css'
 
 const Dashboard = () => {
   const [message, setMessage] = useState('Loading...');
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   const logout = async () => {
@@ -30,16 +31,26 @@ const Dashboard = () => {
             return response.json();
           }
         })
-        .then(data => setMessage(`Hello ${data.username}`))
+        .then(data => {
+          setMessage(`Hello ${data.username}`);
+          setUser(data);
+        })
         .catch(() => navigate('/login'));
     };
 
     fetchMe();
-  }, []);
+  }, [navigate]);
+
+  if (!user) {
+    return (
+      <h2>Loading...</h2>
+    )
+  }
 
   return (
     <div>
       <h1>{message}</h1>
+      <Link to={`/users/${user.id}`}>View your profile</Link>
       <h2>Recent posts from your communities:</h2>
       <PostList communityId={1}></PostList>
       {/* TODO post list for all followed communities */}
