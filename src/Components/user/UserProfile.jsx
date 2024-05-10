@@ -37,6 +37,7 @@ const UserProfile = () => {
     }
   
     checkDiscordLinkButton();
+    checkDiscordDisconnectButton();
   }, [user]);
 
   const handleDiscordDisconnect = () => {
