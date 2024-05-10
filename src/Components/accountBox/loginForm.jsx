@@ -20,7 +20,7 @@ export function LoginForm(props) {
   const navigate = useNavigate();
   
   const login = async () => {
-    await fetch("/auth/login", {
+    await fetch("/api/login", {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({username: username, password: password})

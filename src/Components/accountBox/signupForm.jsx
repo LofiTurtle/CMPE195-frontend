@@ -29,7 +29,7 @@ export function SignupForm(props) {
         return;
       }
 
-      fetch("/auth/register", {
+      fetch("/api/register", {
           method: 'POST',
           headers: { 'Content-type': 'application/json'},
           body: JSON.stringify({username: userName, email: email, password: password, confirmPass: confirmPass})
