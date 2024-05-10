@@ -30,7 +30,7 @@ function PostList({ communityId }) {
           <Link to={`/posts/${post.id}`}>
             <h3>{post.title}</h3>
           </Link>
-          <Link to={`/user/${post.author.id}`}>
+          <Link to={`/users/${post.author.id}`}>
             <p>{post.author.username}</p>
           </Link>
           <p className="post-content">{post.content.substring(0, 100)} {post.content.length > 100 ? '...' : ''}</p>

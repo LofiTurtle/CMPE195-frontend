@@ -30,10 +30,17 @@ function Post() {
   return (
     <div className="post-details">
       <h2>{post.title}</h2>
+      <span>Community: </span>
       <Link to={`/community/${post.community.id}`}>
-        Community: {post.community.name}
+        {post.community.name}
       </Link>
-      <p>Author: {post.author.username}</p>
+      <br />
+      <span>Author: </span>
+      <span>
+        <Link to={`/users/${post.author.id}`}>
+          {post.author.username}
+        </Link>
+      </span>
       <p>{post.content}</p>
     </div>
   );
