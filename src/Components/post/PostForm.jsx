@@ -1,38 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './PostForm.css'
+import axiosApi from '../../Services/api';
+import api from '../../Services/api';
 
 const PostForm = () => {
   const { communityId } = useParams();
 
   const [content, setContent] = useState('');
-  const [author_id, setAuthor] = useState('');
+  const [authorId, setAuthor] = useState('');
   const [title, setTitle] = useState('');
   const [community, setCommunity] = useState({name: 'Loading...', num_users: 0});
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`/api/community/${communityId}`)
-    .then(response => response.json())
-    .then(data => setCommunity(data.data))
+    const getCommunity = async () => {
+      const { community } = await axiosApi.getCommunity(communityId);
+      setCommunity(community);
+    }
+
+    getCommunity();
   }, [communityId])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = {
-        title: title,
-        author_id: author_id,
-        community_id: community.id,
-        content: content
-    };
-    fetch('/api/posts/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body : JSON.stringify(data) })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error();
-        }
-      })
-      .then(navigate(`/community/${communityId}`))
-      .catch(() => console.log('Error creating post.'))
+    
+    await api.createPost(title, content, community.id, authorId);
+    navigate(`/community/${communityId}`)
   };
 
   return (

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './Community.css';
 import PostList from './PostList';
+import api from '../../Services/api';
 
 const Community = () => {
   const { communityId } = useParams();
@@ -9,9 +10,12 @@ const Community = () => {
   const [community, setCommunity] = useState({name: 'Loading...', num_users: 0});
 
   useEffect(() => {
-    fetch(`/api/community/${communityId}`)
-    .then(response => response.json())
-    .then(data => setCommunity(data.data))
+    const getCommunity = async () => {
+      const { community } = await api.getCommunity(communityId);
+      setCommunity(community);
+    }
+
+    getCommunity();
   }, [])
 
 

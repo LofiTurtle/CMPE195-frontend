@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { hasDiscordAccount, getCurrentUserId } from '../../utils';
+import api from '../../Services/api';
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -10,19 +11,11 @@ const UserProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`/api/users/${userId}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error fetching user');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setUser(data.data)
-      })
-      .catch(() => {
-        console.log('Error fetching user');
-      });
+    const getUser = async () => {
+      const { user } = await api.getUser(userId);
+      setUser(user);
+    }
+    getUser();
   }, [userId])
 
   useEffect(() => {

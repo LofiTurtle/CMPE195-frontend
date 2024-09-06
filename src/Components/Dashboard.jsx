@@ -4,6 +4,7 @@ import SteamLoginIcon from '../assets/login-steam.png';
 import PostForm  from './post/PostForm';
 import PostList from './post/PostList';
 import './Dashboard.css'
+import axiosApi from '../Services/api';
 
 const Dashboard = () => {
   const [message, setMessage] = useState('Loading...');
@@ -21,24 +22,14 @@ const Dashboard = () => {
       .catch(() => console.log('Error logging out.'))
   }
 
-  useEffect(() => {
-    const fetchMe = async () => {
-      fetch('/api/me')
-        .then(response => {
-          if (response.status != 200) {
-            throw new Error();
-          } else {
-            return response.json();
-          }
-        })
-        .then(data => {
-          setMessage(`Hello ${data.username}`);
-          setUser(data);
-        })
-        .catch(() => navigate('/login'));
+  useEffect(() =>{
+    const getMe = async () => {
+      const { user } = await axiosApi.getMe();
+      setMessage(`Hello ${user.username}`);
+      setUser(user);
     };
 
-    fetchMe();
+    getMe();
   }, [navigate]);
 
   if (!user) {

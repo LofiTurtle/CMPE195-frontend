@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './PostList.css'
+import api from '../../Services/api';
 
 function PostList({ communityId }) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch(`/api/community/${communityId}/posts`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch posts');
-        }
-        const data = await response.json();
-        setPosts(data.data);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
-    };
+    const getPosts = async () => {
+      const { posts } = await api.getCommunityPosts(communityId);
+      setPosts(posts);
+    }
 
-    fetchPosts();
+    getPosts();
   }, [communityId]);
 
   return (

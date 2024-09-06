@@ -1,11 +1,13 @@
+import api from "./Services/api";
+
 async function getCurrentUserId() {
-  const response = await fetch('/api/me');
-  if (!response.ok) {
+  try {
+    const { user } = api.getMe();
+    return user.id;
+  } catch {
     // Probably just not logged in, return -1 for user id
-    return -1;
+    return -1
   }
-  const data = await response.json();
-  return data.id;
 }
 
 function hasDiscordAccount(user) {
