@@ -7,9 +7,10 @@ import api from '../../Services/api';
 const PostForm = () => {
   const { communityId } = useParams();
 
-  const [content, setContent] = useState('');
   const [authorId, setAuthor] = useState('');
   const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [image, setImage] = useState(null);
   const [community, setCommunity] = useState({name: 'Loading...', num_users: 0});
   const navigate = useNavigate();
 
@@ -25,7 +26,7 @@ const PostForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    await api.createPost(title, content, community.id, authorId);
+    await api.createPost(title, content, community.id, image);
     navigate(`/community/${communityId}`)
   };
 
@@ -50,6 +51,15 @@ const PostForm = () => {
           cols={50}
           required
         />
+        <br />
+        <label htmlFor="image">Image:</label>
+          <input
+            type="file"
+            name="image"
+            id="image"
+            accept="image/*"
+            onChange={(e) => setImage(e.target.files[0])}
+          />
         <br />
         <button type="submit">Submit</button>
       </form>
