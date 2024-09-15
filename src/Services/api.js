@@ -62,19 +62,21 @@ const api = {
     return response.data;
   },
 
-  createPost: async (title, content, communityId) => {
-    const response = await axiosApi.post('/posts', {
-      title,
-      content,
-      community_id: communityId
-    });
+  createPost: async (title, content, communityId, image) => {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('community_id', communityId);
+    if (image) {
+      formData.append('image', image);
+    }
+    const response = await axiosApi.post('/posts', formData, {headers: {'Content-Type': 'multipart/form-data'}});
     return response.data;
   },
 
-  createComment: async (content, authorId, postId) => {
+  createComment: async (content, postId) => {
     const response = await axiosApi.post('/comments', {
       content,
-      author_id: authorId,
       post_id: postId
     });
     return response.data;
