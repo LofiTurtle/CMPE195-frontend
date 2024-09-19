@@ -20,6 +20,11 @@ function PostList({ communityId }) {
       <h2>Posts</h2>
       {posts.map(post => (
         <div className="post" key={post.id}>
+          <img className="post-image" 
+              src={post.image_url} 
+              alt={post.title} 
+              key={post.image_id} >
+          </img>
           <Link to={`/posts/${post.id}`}>
             <h3>{post.title}</h3>
           </Link>

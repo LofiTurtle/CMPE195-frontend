@@ -8,7 +8,7 @@ import { AccountBox } from "./Components/accountBox";
 import Community from './Components/post/Community';
 import PostForm from './Components/post/PostForm';
 import UserProfile from './Components/user/UserProfile';
-
+import { Navbar } from './Components/Navbar/Navbar';
 
 
 const AppContainer = styled.div`
@@ -25,9 +25,12 @@ function App() {
   return (
 
       <Router>
+ 
+        <Navbar/>
         <Routes>
           <Route path="/login" element={<AppContainer><AccountBox/></AppContainer>}/>
           {/* <PrivateRoute path="/dashboard" component={<Dashboard/>} /> */} 
+          
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/posts/:postId" element={<Post />} />
           <Route path="/community/:communityId" element={<Community />}></Route>

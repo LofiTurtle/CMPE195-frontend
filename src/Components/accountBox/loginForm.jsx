@@ -7,7 +7,7 @@ import {
   MutedLink,
   SubmitButton,
 } from "./common";
-import { Marginer } from "../navBar";
+import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';

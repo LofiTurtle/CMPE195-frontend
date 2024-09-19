@@ -3,3 +3,18 @@
     right: 0; 
     top: 0; 
 }
+
+.main-content{
+    margin-top: 50px; /* Same as the navbar height */
+    padding: 1rem;
+    background-color: var(--primary-bg);
+}
+
+h1{
+    color: var(--primary-text-color);
+}
+
+h3{
+    color: var(--secondary-text-color);
+}
+

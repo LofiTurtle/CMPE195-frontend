@@ -39,13 +39,13 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
+    <div className='main-content'>
       <h1>{message}</h1>
       <Link to={`/users/${user.id}`}>View your profile</Link>
       <h2>Recent posts from your communities:</h2>
       <PostList communityId={1}></PostList>
       {/* TODO post list for all followed communities */}
-      <button onClick={logout}>Log out</button>
+      
       {/* <div className="steamAuth">
         <a
           className="App-link"
