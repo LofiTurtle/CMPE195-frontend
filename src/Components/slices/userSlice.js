@@ -1,12 +1,17 @@
 // userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
+import api from '/src/Services/api.js';
 export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
-  const response = await fetch('/api/user');
-  if (!response.ok) {
-    throw new Error('Failed to fetch user');
+  try {
+    const response = await api.getMe();
+    if (!response.ok) {
+      throw new Error('Failed to fetch user');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(error.message || 'Failed to fetch user');
   }
-  return response.json();
 });
 
 const userSlice = createSlice({
