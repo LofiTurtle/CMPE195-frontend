@@ -62,5 +62,64 @@
     object-fit: cover; 
     margin-bottom: 10px; 
   }
+
+  .post-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* space between like button and comment section */
+  }
+  
+  .post-actions button {
+    padding: 8px 12px;
+    background-color: #F8f8f8; /* Bootstrap primary blue color */
+    border: none;
+    border-radius: 4px;
+    color: var(--secondary-text-color);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .post-actions button:hover {
+    background-color: #F1f1f1; /* Darker shade of blue for hover state */
+  }
+  
+  .post-actions button:focus {
+    outline: none;
+  }
+  
+  .comment-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .comment-section textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+  }
+  
+  .comment-section button {
+    padding: 6px 10px;
+    background-color: var(--secondary-bg); /* Bootstrap success green color */
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .comment-section button:hover {
+    background-color: #218838; /* Darker shade of green for hover state */
+  }
+  
+  .comment-section button:focus {
+    outline: none;
+  }
+  
   
   

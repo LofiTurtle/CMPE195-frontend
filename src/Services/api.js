@@ -81,6 +81,12 @@ const api = {
     });
     return response.data;
   },
+
+  likePost: async (postId) => {
+    const response = await axiosApi.post(`/posts/${postId}/like`);
+    return response.data;
+  },
+  
 };
 
 export default api;
