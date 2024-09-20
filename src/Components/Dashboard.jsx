@@ -8,7 +8,7 @@ import axiosApi from '../Services/api';
 
 const Dashboard = () => {
   const [message, setMessage] = useState('Loading...');
-  const [user, setUser] = useState(null);
+  const { username, id, status } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   const logout = async () => {
