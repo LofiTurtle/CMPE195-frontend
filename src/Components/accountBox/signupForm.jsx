@@ -10,6 +10,8 @@ import {
 } from "./common";
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
+import { setUsernameInput } from '../slices/userSlice'; // Adjust the path if necessary
+import { useDispatch } from 'react-redux';
 
 export function SignupForm(props) {
   const { switchToSignin } = useContext(AccountContext);
@@ -19,6 +21,7 @@ export function SignupForm(props) {
   const [confirmPass, setConfirmPass] = useState('');
   const navigate = useNavigate();
   const [match, setMatch] = useState(true);
+  const dispatch = useDispatch();
 
   const signUp  = async () => {
     if (password !== confirmPass) {
@@ -41,6 +44,7 @@ export function SignupForm(props) {
                 }
             })
             .then(() => {
+                dispatch(setUsernameInput(username)); // Dispatch the setUsername action
                 navigate('/dashboard')
             })
             .catch(() => console.log('failed register fetch'));

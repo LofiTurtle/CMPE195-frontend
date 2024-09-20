@@ -9,8 +9,10 @@ import {
 } from "./common";
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
-import {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUsernameInput } from '../slices/userSlice'; // Adjust the path if necessary
 
 export function LoginForm(props) {
   const { switchToSignup } = useContext(AccountContext);
@@ -18,6 +20,7 @@ export function LoginForm(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   
   const login = async () => {
     await fetch("/api/login", {
@@ -27,9 +30,12 @@ export function LoginForm(props) {
      })
          .then(response => {
              if(response.status != 200) {
-                 throw new Error()}
+                 throw new Error('Failed to login')}
              })
-         .then(() => navigate('/dashboard'))
+         .then(() => {
+             dispatch(setUsernameInput(username)); // Dispatch the setUsername action
+             navigate('/dashboard');
+         })
          .catch(() => console.log('failed login fetch'))
      };
 

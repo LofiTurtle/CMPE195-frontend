@@ -9,17 +9,7 @@ import Community from './Components/post/Community';
 import PostForm from './Components/post/PostForm';
 import UserProfile from './Components/user/UserProfile';
 import { Navbar } from './Components/Navbar/Navbar';
-import store from './store';
-import { Provider } from 'react-redux';
-import ReactDOM from 'react-dom';
 
-
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-);
 
 const AppContainer = styled.div`
   width: 100%;

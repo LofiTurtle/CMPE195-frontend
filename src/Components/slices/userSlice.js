@@ -1,26 +1,28 @@
-// src/slices/userSlice.js
+// userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-
-
-// Async thunk to fetch user data
 export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
-  const { user } = await axiosApi.getMe(); // Assuming getMe() returns the user object
-  return user;
+  const response = await fetch('/api/user');
+  if (!response.ok) {
+    throw new Error('Failed to fetch user');
+  }
+  return response.json();
 });
 
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    username: '',
-    id: null,
-    status: 'idle',  // 'idle' | 'loading' | 'succeeded' | 'failed'
+    username: null,
+    status: 'idle',
+    error: null,
   },
-  reducers: {
-    logoutUser(state) {
-      state.username = '';
-      state.id = null;
-    },
+  reducers: {    
+    setUsernameInput: (state, action) => {
+    state.username = action.payload;
+     },
+    clearUsername: (state) => {
+      state.username = null;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -28,17 +30,15 @@ const userSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        state.username = action.payload.username;
-        state.id = action.payload.id;
         state.status = 'succeeded';
+        state.username = action.payload.username;
       })
-      .addCase(fetchUser.rejected, (state) => {
+      .addCase(fetchUser.rejected, (state, action) => {
         state.status = 'failed';
+        state.error = action.error.message;
       });
   },
 });
 
-export const { logoutUser } = userSlice.actions;
+export const { setUsernameInput, clearUsername } = userSlice.actions;
 export default userSlice.reducer;
-
-
