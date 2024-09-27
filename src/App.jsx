@@ -11,9 +11,10 @@ import UserProfile from './Components/user/UserProfile';
 import { Navbar } from './Components/Navbar/Navbar';
 
 
+
 const AppContainer = styled.div`
   width: 100%;
-  height: 150%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,16 +28,18 @@ function App() {
       <Router>
  
         <Navbar/>
+        
         <Routes>
           <Route path="/login" element={<AppContainer><AccountBox/></AppContainer>}/>
           {/* <PrivateRoute path="/dashboard" component={<Dashboard/>} /> */} 
-          
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/posts/:postId" element={<Post />} />
-          <Route path="/community/:communityId" element={<Community />}></Route>
-          <Route path="/community/:communityId/create-post" element={<PostForm />}></Route>
-          <Route path="/users/:userId" element={<UserProfile />}></Route>
-          <Route path="/" element={<Navigate replace to="/login" />} />
+          <Route element={<Navbar></Navbar>}/>
+       
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/posts/:postId" element={<Post />} />
+            <Route path="/community/:communityId" element={<Community />}></Route>
+            <Route path="/community/:communityId/create-post" element={<PostForm />}></Route>
+            <Route path="/users/:userId" element={<UserProfile />}></Route>
+            <Route path="/" element={<Navigate replace to="/login" />} />
         </Routes>
       </Router>
   )
