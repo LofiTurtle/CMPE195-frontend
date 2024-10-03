@@ -15,7 +15,7 @@ import TestFollowing from './Components/tests/TestFollowing';
 
 const AppContainer = styled.div`
   width: 100%;
-  height: 150%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,10 +29,12 @@ function App() {
       <Router>
  
         <Navbar/>
+        
         <Routes>
           <Route path="/login" element={<AppContainer><AccountBox/></AppContainer>}/>
           {/* <PrivateRoute path="/dashboard" component={<Dashboard/>} /> */} 
-          
+          <Route element={<Navbar></Navbar>}/>
+       
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/posts/:postId" element={<Post />} />
           <Route path="/community/:communityId" element={<Community />}></Route>

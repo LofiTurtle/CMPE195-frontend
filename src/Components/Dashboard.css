@@ -5,8 +5,9 @@
 }
 
 .main-content{
-    margin-top: 50px; /* Same as the navbar height */
-    padding: 1rem;
+    
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
     background-color: var(--primary-bg);
 }
 
