@@ -86,7 +86,51 @@ const api = {
     const response = await axiosApi.post(`/posts/${postId}/like`);
     return response.data;
   },
+
+  getFollowers: async (userId) => {
+    const response = await axiosApi.get(`/users/${userId}/followers`);
+    return response.data;
+  },
+
+  getFollowing: async (userId) => {
+    const response = await axiosApi.get(`/users/${userId}/following`);
+    return response.data;
+  },
+
+  followUser: async (userId) => {
+    await axiosApi.post(`/users/${userId}/follow`);
+  },
+
+  unfollowUser: async (userId) => {
+    await axiosApi.delete(`/users/${userId}/follow`);
+  },
+
+  getRelationship: async (userId) => {
+    // Return the follower/following relationship between the current user and userId
+    // Response format: {following: boolean, followed_by: boolean}
+    const response = await axiosApi.get(`/users/${userId}/relationship`);
+    return response.data;
+  },
+
+  getUserCommunities: async (userId) => {
+    // Return the communities a user follows
+    const response = await axiosApi.get(`/users/${userId}/communities`);
+    return response.data;
+  },
+
+  getCommunityUsers: async (communityId) => {
+    // Return the users who follow a community
+    const response = await axiosApi.get(`/communities/${communityId}/users`);
+    return response.data;
+  },
   
+  followCommunity: async (communityId) => {
+    await axiosApi.post(`/communities/${communityId}/follow`);
+  },
+
+  unfollowCommunity: async (communityId) => {
+    await axiosApi.delete(`/communities/${communityId}/follow`);
+  }
 };
 
 export default api;

@@ -10,6 +10,7 @@ import PostForm from './Components/post/PostForm';
 import UserProfile from './Components/user/UserProfile';
 import { Navbar } from './Components/Navbar/Navbar';
 
+import TestFollowing from './Components/tests/TestFollowing';
 
 
 const AppContainer = styled.div`
@@ -34,12 +35,13 @@ function App() {
           {/* <PrivateRoute path="/dashboard" component={<Dashboard/>} /> */} 
           <Route element={<Navbar></Navbar>}/>
        
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/posts/:postId" element={<Post />} />
-            <Route path="/community/:communityId" element={<Community />}></Route>
-            <Route path="/community/:communityId/create-post" element={<PostForm />}></Route>
-            <Route path="/users/:userId" element={<UserProfile />}></Route>
-            <Route path="/" element={<Navigate replace to="/login" />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/posts/:postId" element={<Post />} />
+          <Route path="/community/:communityId" element={<Community />}></Route>
+          <Route path="/community/:communityId/create-post" element={<PostForm />}></Route>
+          <Route path="/users/:userId" element={<UserProfile />}></Route>
+          <Route path="/" element={<Navigate replace to="/login" />} />
+          <Route path='/tests/test-following' element={<TestFollowing />} />
         </Routes>
       </Router>
   )
