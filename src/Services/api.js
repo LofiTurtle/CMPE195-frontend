@@ -43,12 +43,12 @@ const api = {
   },
 
   getCommunity: async (communityId) => {
-    const response = await axiosApi.get(`/community/${communityId}`);
+    const response = await axiosApi.get(`/communities/${communityId}`);
     return response.data;
   },
 
   getCommunityPosts: async (communityId) => {
-    const response = await axiosApi.get(`/community/${communityId}/posts`);
+    const response = await axiosApi.get(`/communities/${communityId}/posts`);
     return response.data;
   },
 
