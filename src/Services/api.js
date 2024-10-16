@@ -130,6 +130,26 @@ const api = {
 
   unfollowCommunity: async (communityId) => {
     await axiosApi.delete(`/communities/${communityId}/follow`);
+  },
+
+  createCommunity: async (gameId, communityName) => {
+    const response = await axiosApi.post(`/communities`, {
+      game_id: gameId,
+      community_name: communityName
+    });
+    return response.data;
+  },
+
+  gameSearchResults: async (query) => {
+    const response = await axiosApi.get(`/game-search`, { params: {
+      q: query
+    }});
+    return response.data;
+  },
+
+  gameInfo: async (gameId) => {
+    const response = await axiosApi.get(`/game-info/${gameId}`);
+    return response.data;
   }
 };
 

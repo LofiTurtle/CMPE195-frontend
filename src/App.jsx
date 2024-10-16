@@ -9,6 +9,8 @@ import Community from './Components/post/Community';
 import PostForm from './Components/post/PostForm';
 import UserProfile from './Components/user/UserProfile';
 import { Navbar } from './Components/Navbar/Navbar';
+import GameSearch from './Components/post/GameSearch';
+import CreateCommunity from './Components/post/CreateCommunity';
 
 import TestFollowing from './Components/tests/TestFollowing';
 
@@ -42,6 +44,8 @@ function App() {
           <Route path="/users/:userId" element={<UserProfile />}></Route>
           <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path='/tests/test-following' element={<TestFollowing />} />
+          <Route path="/game-search" element={<GameSearch />} />
+          <Route path="/create-community/:gameId" element={<CreateCommunity />} />
         </Routes>
       </Router>
   )
