@@ -1,65 +1,49 @@
-import axios from 'axios';
-
 const API_BASE_URL = '/api';
 
-const axiosApi = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: true,
-});
-
-axiosApi.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response) {
-      console.error('API Error:', error.response.data);
-      return Promise.reject(error.response.data);
-    } else if (error.request) {
-      console.error('API Error: No response received');
-      return Promise.reject(new Error('No response received from the server'));
-    } else {
-      console.error('API Error:', error.message);
-      return Promise.reject(error);
-    }
+const handleResponse = async (response) => {
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error('API Error:', errorData);
+    throw new Error(errorData.message || 'API Error');
   }
-);
+  return response.json();
+};
 
 const api = {
   getMe: async () => {
-    const response = await axiosApi.get('/me');
-    return response.data;
+    const response = await fetch(`${API_BASE_URL}/me`, { credentials: 'include' });
+    return handleResponse(response);
   },
 
   getUser: async (userId) => {
-    const response = await axiosApi.get(`/users/${userId}`);
-    return response.data;
+    const response = await fetch(`${API_BASE_URL}/users/${userId}`, { credentials: 'include' });
+    return handleResponse(response);
   },
 
   getUserPosts: async (userId) => {
-    const response = await axiosApi.get(`/users/${userId}/posts`);
-    return response.data;
+    const response = await fetch(`${API_BASE_URL}/users/${userId}/posts`, { credentials: 'include' });
+    return handleResponse(response);
   },
 
   getCommunity: async (communityId) => {
-    const response = await axiosApi.get(`/communities/${communityId}`);
-    return response.data;
+
+    const response = await fetch(`${API_BASE_URL}/community/${communityId}`, { credentials: 'include' });
+    return handleResponse(response);
   },
 
   getCommunityPosts: async (communityId) => {
-    const response = await axiosApi.get(`/communities/${communityId}/posts`);
-    return response.data;
+    const response = await fetch(`${API_BASE_URL}/community/${communityId}/posts`, { credentials: 'include' });
+    return handleResponse(response);
   },
 
   getHomepage: async () => {
-    const response = await axiosApi.get('/homepage');
-    return response.data;
+    const response = await fetch(`${API_BASE_URL}/homepage`, { credentials: 'include' });
+    return handleResponse(response);
   },
 
   getPost: async (postId) => {
-    const response = await axiosApi.get(`/posts/${postId}`);
-    return response.data;
+    const response = await fetch(`${API_BASE_URL}/posts/${postId}`, { credentials: 'include' });
+    return handleResponse(response);
   },
 
   createPost: async (title, content, communityId, image) => {
@@ -70,16 +54,22 @@ const api = {
     if (image) {
       formData.append('image', image);
     }
-    const response = await axiosApi.post('/posts', formData, {headers: {'Content-Type': 'multipart/form-data'}});
-    return response.data;
+    const response = await fetch(`${API_BASE_URL}/posts`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+    });
+    return handleResponse(response);
   },
 
   createComment: async (content, postId) => {
-    const response = await axiosApi.post('/comments', {
-      content,
-      post_id: postId
+    const response = await fetch(`${API_BASE_URL}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content, post_id: postId }),
+      credentials: 'include',
     });
-    return response.data;
+    return handleResponse(response);
   },
 
   likePost: async (postId) => {

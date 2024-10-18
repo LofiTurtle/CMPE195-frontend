@@ -4,12 +4,29 @@ import SteamLoginIcon from '../assets/login-steam.png';
 import PostForm  from './post/PostForm';
 import PostList from './post/PostList';
 import './Dashboard.css'
-import axiosApi from '../Services/api';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUser } from '../Components/slices/userSlice'; // Adjust the path if necessary
+
 
 const Dashboard = () => {
   const [message, setMessage] = useState('Loading...');
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
+
+
+
+  useEffect(() => {
+    dispatch(fetchUser()); // Dispatch the fetchUser action, to get the slices
+  }, [dispatch]);
+
+  useEffect(() => { //checking if the username is in placem to set the message
+    if (user && user.username) {
+      setMessage(`Welcome, ${user.username}!`);
+    } else {
+      setMessage('Loading...');
+    }
+  }, [user]);
 
   const logout = async () => {
     fetch('/api/logout', { method: 'POST' })
@@ -22,26 +39,12 @@ const Dashboard = () => {
       .catch(() => console.log('Error logging out.'))
   }
 
-  useEffect(() =>{
-    const getMe = async () => {
-      const { user } = await axiosApi.getMe();
-      setMessage(`Hello ${user.username}`);
-      setUser(user);
-    };
 
-    getMe();
-  }, [navigate]);
-
-  if (!user) {
-    return (
-      <h2>Loading...</h2>
-    )
-  }
 
   return (
     <div className='main-content'>
       <h1>{message}</h1>
-      <Link to={`/users/${user.id}`}>View your profile</Link>
+      {user.username && <Link to={`/users/${user.username}`}>View your profile</Link>}
       <h2>Recent posts from your communities:</h2>
       <PostList communityId={1}></PostList>
       {/* TODO post list for all followed communities */}

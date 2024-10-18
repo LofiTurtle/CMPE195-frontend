@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './Post.css'
 import api from '../../Services/api';
+import { useSelector } from 'react-redux';
 
 function Post() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
+  const username = useSelector((state) => state.user.username); // Select username from Redux state
+
 
   useEffect(() => {
     const getPost = async () => {
@@ -34,7 +37,12 @@ function Post() {
         </Link>
       </span>
       <p>{post.content}</p>
+      <div>
+        <span>User: </span>
+        <span>{username}</span> {/* Display the username from Redux state */}
+      </div>
     </div>
+
   );
 }
 
