@@ -8,6 +8,8 @@ const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [showDiscordLinkButton, setShowDiscordLinkButton] = useState(false);
   const [showDiscordDisconnectButton, setShowDiscordDisconnectButton] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isOwnProfile, setIsOwnProfile] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,6 +18,14 @@ const UserProfile = () => {
       setUser(user);
     }
     getUser();
+
+    const getIsFollowing = async () => {
+      const {user: currentUser } = await api.getMe();
+      setIsOwnProfile(Number(userId) === currentUser.id);
+      const { following } = await api.getRelationship(userId);
+      setIsFollowing(following);
+    }
+    getIsFollowing();
   }, [userId])
 
   useEffect(() => {
@@ -45,6 +55,18 @@ const UserProfile = () => {
     .catch(error => console.log(error));
   }
 
+  const toggleFollowing = async () => {
+    if (isFollowing) {
+      await api.unfollowUser(userId);
+      setIsFollowing(false);
+      setUser({ ...user, follower_count: user.follower_count - 1});
+    } else {
+      await api.followUser(userId);
+      setIsFollowing(true);
+      setUser({ ...user, follower_count: user.follower_count + 1});
+    }
+  }
+
   if (!user) {
     return (
       <h1>Loading user...</h1>
@@ -53,8 +75,18 @@ const UserProfile = () => {
 
   return (
     <div>
-      <Link to={'/dashboard'}>Go to Dashboard</Link>
       <h1>{user.username}</h1>
+      {
+        !isOwnProfile ?
+        <div>
+          <br />
+          <button onClick={toggleFollowing}>{isFollowing ? 'Unfollow' : 'Follow'} user</button>
+          <br />
+        </div>
+        : null
+      }
+      <p onClick={() => navigate(`/users/${userId}/followers`)} style={{cursor: 'pointer'}}>{user.follower_count} followers</p>
+      <p onClick={() => navigate(`/users/${userId}/following`)} style={{cursor: 'pointer'}}>{user.following_count} following</p>
       <h2>Bio:</h2>
       <p>{user.profile.bio}</p>
       <br />

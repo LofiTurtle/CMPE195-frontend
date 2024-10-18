@@ -1,40 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './PostForm.css'
-import axiosApi from '../../Services/api';
 import api from '../../Services/api';
 
 const PostForm = () => {
-  const { communityId } = useParams();
-
-  const [authorId, setAuthor] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
+  const [followedCommunities, setFollowedCommunities] = useState([]);
   const [community, setCommunity] = useState({name: 'Loading...', num_users: 0});
+  const [communityLabel, setCommunityLabel] = useState('Choose a community...')
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getCommunity = async () => {
-      const { community } = await axiosApi.getCommunity(communityId);
-      setCommunity(community);
+    const getCommunities = async () => {
+      const { user: currentUser } = await api.getMe();
+      const { communities } = await api.getUserCommunities(currentUser.id);
+      setFollowedCommunities(communities);
     }
 
-    getCommunity();
-  }, [communityId])
+    getCommunities();
+  }, []);
+
+  const selectCommunity = (community) => {
+    setCommunity(community);
+    setCommunityLabel(community.name);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     await api.createPost(title, content, community.id, image);
-    navigate(`/community/${communityId}`)
+    navigate(`/community/${community.id}`)
   };
 
   return (
     <div className="container">
-      <h1 className="left-header">{community.name}</h1>
-      <h2 className="left-header">Create a New Post</h2>
+      <h1 className="left-header">Create a New Post</h1>
       <form onSubmit={handleSubmit}>
+        <div>
+          <h2>{communityLabel}</h2>
+          <br />
+          <ul>
+            {followedCommunities.map((community) => (
+              <li
+                key={community.id}
+                onClick={() => selectCommunity(community)}
+                style={{cursor: 'pointer', border: '1px solid gray', maxWidth: 'fit-content'}}
+              >{community.name}</li>
+            ))}
+          </ul>
+        </div>
+        <br />
         <input
           type="text"
           value={title}
