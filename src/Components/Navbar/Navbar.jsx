@@ -34,6 +34,7 @@ export const Navbar = () => {
 
       <ul className='navbar-items'>
        
+      <li><button onClick={() => navigate('/create-post')}>New Post</button></li>
       <li>
             <div className='menu-container'>
               <div
