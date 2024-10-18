@@ -59,9 +59,11 @@ const UserProfile = () => {
     if (isFollowing) {
       await api.unfollowUser(userId);
       setIsFollowing(false);
+      setUser({ ...user, follower_count: user.follower_count - 1});
     } else {
       await api.followUser(userId);
       setIsFollowing(true);
+      setUser({ ...user, follower_count: user.follower_count + 1});
     }
   }
 
@@ -74,9 +76,17 @@ const UserProfile = () => {
   return (
     <div>
       <h1>{user.username}</h1>
-      {!isOwnProfile ? <div><br />
-      <button onClick={toggleFollowing}>{isFollowing ? 'Unfollow' : 'Follow'} user</button>
-      <br /></div> : null}
+      {
+        !isOwnProfile ?
+        <div>
+          <br />
+          <button onClick={toggleFollowing}>{isFollowing ? 'Unfollow' : 'Follow'} user</button>
+          <br />
+        </div>
+        : null
+      }
+      <p onClick={() => navigate(`/users/${userId}/followers`)} style={{cursor: 'pointer'}}>{user.follower_count} followers</p>
+      <p onClick={() => navigate(`/users/${userId}/following`)} style={{cursor: 'pointer'}}>{user.following_count} following</p>
       <h2>Bio:</h2>
       <p>{user.profile.bio}</p>
       <br />
