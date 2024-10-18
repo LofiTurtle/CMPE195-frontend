@@ -34,6 +34,7 @@ export function LoginForm(props) {
              })
          .then(() => {
              dispatch(setUsernameInput(username)); // Dispatch the setUsername action
+             dispatch(fetchUser());
              navigate('/dashboard');
          })
          .catch(() => console.log('failed login fetch'))

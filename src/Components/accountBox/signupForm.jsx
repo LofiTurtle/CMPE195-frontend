@@ -45,7 +45,8 @@ export function SignupForm(props) {
             })
             .then(() => {
                 dispatch(setUsernameInput(username)); // Dispatch the setUsername action
-                navigate('/dashboard')
+                dispatch(fetchUser());
+                wnavigate('/dashboard')
             })
             .catch(() => console.log('failed register fetch'));
         };

@@ -1,13 +1,9 @@
-// userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '/src/Services/api.js';
+
 export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
   try {
-    const response = await api.getMe();
-    if (!response.ok) {
-      throw new Error('Failed to fetch user');
-    }
-    const data = await response.json();
+    const data = await api.getMe();
     return data;
   } catch (error) {
     throw new Error(error.message || 'Failed to fetch user');
@@ -23,8 +19,8 @@ const userSlice = createSlice({
   },
   reducers: {    
     setUsernameInput: (state, action) => {
-    state.username = action.payload;
-     },
+      state.username = action.payload;
+    },
     clearUsername: (state) => {
       state.username = null;
     }

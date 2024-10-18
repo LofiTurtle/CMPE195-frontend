@@ -9,10 +9,8 @@ import { fetchUser } from '../Components/slices/userSlice'; // Adjust the path i
 
 
 const Dashboard = () => {
-  const [message, setMessage] = useState('Loading...');
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const navigate = useNavigate();
+  const { username, status, error } = useSelector((state) => state.user);
 
 
 
@@ -20,13 +18,13 @@ const Dashboard = () => {
     dispatch(fetchUser()); // Dispatch the fetchUser action, to get the slices
   }, [dispatch]);
 
-  useEffect(() => { //checking if the username is in placem to set the message
-    if (user && user.username) {
-      setMessage(`Welcome, ${user.username}!`);
-    } else {
-      setMessage('Loading...');
-    }
-  }, [user]);
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (status === 'failed') {
+    return <div>Error: {error}</div>;
+  }
 
   const logout = async () => {
     fetch('/api/logout', { method: 'POST' })
