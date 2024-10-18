@@ -40,7 +40,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/posts/:postId" element={<Post />} />
           <Route path="/community/:communityId" element={<Community />}></Route>
-          <Route path="/community/:communityId/create-post" element={<PostForm />}></Route>
+          <Route path="/create-post" element={<PostForm />}></Route>
           <Route path="/users/:userId" element={<UserProfile />}></Route>
           <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path='/tests/test-following' element={<TestFollowing />} />

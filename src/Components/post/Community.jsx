@@ -23,7 +23,7 @@ const Community = () => {
     <div>
       <h1>{community.name}</h1>
       {/* <button>Follow Community (not yet implemented)</button> */}
-      <Link to={`/community/${communityId}/create-post`}>Create New Post</Link>
+      <Link to={`/create-post`}>Create New Post</Link>
       <p>{community.num_users} members</p>
       <PostList communityId={communityId}></PostList>
     </div>
