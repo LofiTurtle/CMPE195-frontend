@@ -49,12 +49,12 @@ function PostList({ communityId }) {
       <h2>Posts</h2>
       {posts.map(post => (
         <div className="post" key={post.id}>
-          <img
+          {post.media === 'image' ? <img
             className="post-image"
             src={`${backendUrl}/api/posts/${post.id}/image`}
             alt={post.title}
             onError={(e) => { e.target.style.display = 'none'; }}
-          />
+          /> : null}
           <Link to={`/posts/${post.id}`}>
             <h3>{post.title}</h3>
           </Link>
