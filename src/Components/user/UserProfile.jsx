@@ -8,6 +8,8 @@ const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [showDiscordLinkButton, setShowDiscordLinkButton] = useState(false);
   const [showDiscordDisconnectButton, setShowDiscordDisconnectButton] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isOwnProfile, setIsOwnProfile] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,6 +18,14 @@ const UserProfile = () => {
       setUser(user);
     }
     getUser();
+
+    const getIsFollowing = async () => {
+      const {user: currentUser } = await api.getMe();
+      setIsOwnProfile(Number(userId) === currentUser.id);
+      const { following } = await api.getRelationship(userId);
+      setIsFollowing(following);
+    }
+    getIsFollowing();
   }, [userId])
 
   useEffect(() => {
@@ -45,6 +55,16 @@ const UserProfile = () => {
     .catch(error => console.log(error));
   }
 
+  const toggleFollowing = async () => {
+    if (isFollowing) {
+      await api.unfollowUser(userId);
+      setIsFollowing(false);
+    } else {
+      await api.followUser(userId);
+      setIsFollowing(true);
+    }
+  }
+
   if (!user) {
     return (
       <h1>Loading user...</h1>
@@ -53,8 +73,10 @@ const UserProfile = () => {
 
   return (
     <div>
-      <Link to={'/dashboard'}>Go to Dashboard</Link>
       <h1>{user.username}</h1>
+      {!isOwnProfile ? <div><br />
+      <button onClick={toggleFollowing}>{isFollowing ? 'Unfollow' : 'Follow'} user</button>
+      <br /></div> : null}
       <h2>Bio:</h2>
       <p>{user.profile.bio}</p>
       <br />
