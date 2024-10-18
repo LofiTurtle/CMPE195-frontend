@@ -11,6 +11,7 @@ import UserProfile from './Components/user/UserProfile';
 import { Navbar } from './Components/Navbar/Navbar';
 import GameSearch from './Components/post/GameSearch';
 import CreateCommunity from './Components/post/CreateCommunity';
+import CommunityMemberList from './Components/post/CommunityMemberList';
 
 import TestFollowing from './Components/tests/TestFollowing';
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/posts/:postId" element={<Post />} />
           <Route path="/community/:communityId" element={<Community />}></Route>
+          <Route path="/community/:communityId/members" element={<CommunityMemberList />}></Route>
           <Route path="/create-post" element={<PostForm />}></Route>
           <Route path="/users/:userId" element={<UserProfile />}></Route>
           <Route path="/" element={<Navigate replace to="/login" />} />
