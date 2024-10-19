@@ -140,6 +140,15 @@ const api = {
     return response.data;
   },
 
+  search: async (query, searchType) => {
+    // searchType is either 'community' or 'user'
+    const response = await axiosApi.get(`/search`, { params: {
+      q: query,
+      type: searchType
+    }});
+    return response.data;
+  },
+
   gameSearchResults: async (query) => {
     const response = await axiosApi.get(`/game-search`, { params: {
       q: query

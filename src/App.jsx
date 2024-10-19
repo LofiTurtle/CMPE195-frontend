@@ -16,6 +16,7 @@ import CommunityMemberList from './Components/post/CommunityMemberList';
 import TestFollowing from './Components/tests/TestFollowing';
 import UserFollowerList from './Components/user/UserFollowerList';
 import UserFollowingList from './Components/user/UserFollowingList';
+import TestSearch from './Components/tests/TestSearch';
 
 
 const AppContainer = styled.div`
@@ -49,9 +50,11 @@ function App() {
           <Route path="/users/:userId/followers" element={<UserFollowerList />}></Route>
           <Route path="/users/:userId/following" element={<UserFollowingList />}></Route>
           <Route path="/" element={<Navigate replace to="/login" />} />
-          <Route path='/tests/test-following' element={<TestFollowing />} />
           <Route path="/game-search" element={<GameSearch />} />
           <Route path="/create-community/:gameId" element={<CreateCommunity />} />
+          
+          <Route path='/tests/search' element={<TestSearch />} />
+          <Route path='/tests/following' element={<TestFollowing />} />
         </Routes>
       </Router>
   )
