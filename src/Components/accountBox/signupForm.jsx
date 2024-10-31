@@ -23,33 +23,39 @@ export function SignupForm(props) {
   const [match, setMatch] = useState(true);
   const dispatch = useDispatch();
 
-  const signUp  = async () => {
+  const signUp = async () => {
     if (password !== confirmPass) {
-        setMatch(false);
+      setMatch(false);
+      return;
+    }
+    if (email === "" || password === "" || confirmPass === "") {
+      return;
+    }
+  
+    try {
+      const response = await fetch("/api/register", {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify({ username: userName, email: email, password: password, confirmPass: confirmPass })
+      });
+  
+      if (response.status === 409) {
+        // Handle the conflict error (e.g., username or email already exists)
+        console.log('Username or email already exists');
+        // You can set an error state here to display a message to the user
         return;
       }
-      if (email === "" || password === "" || confirmPass === "") {
-        return;
+  
+      if (response.status !== 201) {
+        throw new Error('Failed to register');
       }
-
-      fetch("/api/register", {
-          method: 'POST',
-          headers: { 'Content-type': 'application/json'},
-          body: JSON.stringify({username: userName, email: email, password: password, confirmPass: confirmPass})
-      })
-            .then(response => {
-                if (response.status != 201) {
-                    console.log()
-                    throw new Error()
-                }
-            })
-            .then(() => {
-                dispatch(setUsernameInput(username)); // Dispatch the setUsername action
-                dispatch(fetchUser());
-                wnavigate('/dashboard')
-            })
-            .catch(() => console.log('failed register fetch'));
-        };
+  
+      dispatch(setUsernameInput(userName)); // Dispatch the setUsername action
+      navigate('/dashboard');
+    } catch (error) {
+      console.log('Failed to register:', error);
+    }
+  };
 
   return (
     <BoxContainer>

@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import {
   BoldLink,
   BoxContainer,
@@ -9,8 +10,6 @@ import {
 } from "./common";
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUsernameInput } from '../slices/userSlice'; // Adjust the path if necessary
 
@@ -21,24 +20,26 @@ export function LoginForm(props) {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const login = async () => {
-    await fetch("/api/login", {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({username: username, password: password})
-     })
-         .then(response => {
-             if(response.status != 200) {
-                 throw new Error('Failed to login')}
-             })
-         .then(() => {
-             dispatch(setUsernameInput(username)); // Dispatch the setUsername action
-             dispatch(fetchUser());
-             navigate('/dashboard');
-         })
-         .catch(() => console.log('failed login fetch'))
-     };
+    try {
+        const response = await fetch("/api/login", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: username, password: password })
+        });
+
+        if (response.status !== 200) {
+            throw new Error('Failed to login');
+        }
+
+        await response.json();
+        dispatch(setUsernameInput(username)); // Dispatch the setUsername action
+        navigate('/dashboard');
+    } catch (error) {
+        console.log('failed login fetch:', error.message);
+    }
+};
 
   return (
     <BoxContainer>
