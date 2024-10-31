@@ -4,7 +4,7 @@ import SteamLoginIcon from '../assets/login-steam.png';
 import PostForm  from './post/PostForm';
 import PostList from './post/PostList';
 import './Dashboard.css'
-import axiosApi from '../Services/api';
+import api from '../Services/api';
 
 const Dashboard = () => {
   const [message, setMessage] = useState('Loading...');
@@ -24,7 +24,7 @@ const Dashboard = () => {
 
   useEffect(() =>{
     const getMe = async () => {
-      const { user } = await axiosApi.getMe();
+      const { user } = await api.getMe();
       setMessage(`Hello ${user.username}`);
       setUser(user);
     };
