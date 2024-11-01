@@ -37,8 +37,10 @@ const api = {
     return response.data;
   },
 
-  getUserPosts: async (userId) => {
-    const response = await axiosApi.get(`/users/${userId}/posts`);
+  getUserPosts: async (userId, sortType) => {
+    const response = await axiosApi.get(`/users/${userId}/posts`, {params: {
+      sort: sortType
+    }});
     return response.data;
   },
 
@@ -47,13 +49,17 @@ const api = {
     return response.data;
   },
 
-  getCommunityPosts: async (communityId) => {
-    const response = await axiosApi.get(`/communities/${communityId}/posts`);
+  getCommunityPosts: async (communityId, sortType) => {
+    const response = await axiosApi.get(`/communities/${communityId}/posts`, {params: {
+      sort: sortType
+    }});
     return response.data;
   },
 
-  getHomepage: async () => {
-    const response = await axiosApi.get('/homepage');
+  getHomepage: async (sortType) => {
+    const response = await axiosApi.get('/homepage', {params: {
+      sort: sortType
+    }});
     return response.data;
   },
 
