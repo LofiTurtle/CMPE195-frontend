@@ -38,7 +38,6 @@ function Post() {
       </span>
       <p>{post.content}</p>
       <div>
-        <span>User: </span>
       </div>
     </div>
 
