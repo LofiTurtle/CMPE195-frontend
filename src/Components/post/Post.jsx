@@ -39,7 +39,6 @@ function Post() {
       <p>{post.content}</p>
       <div>
         <span>User: </span>
-        <span>{username}</span> {/* Display the username from Redux state */}
       </div>
     </div>
 
