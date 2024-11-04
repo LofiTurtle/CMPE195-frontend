@@ -8,6 +8,7 @@ import { AccountBox } from "./Components/accountBox";
 import Community from './Components/post/Community';
 import PostForm from './Components/post/PostForm';
 import UserProfile from './Components/user/UserProfile';
+import EditProfileForm from './Components/accountBox/EditProfileForm';
 import { Navbar } from './Components/Navbar/Navbar';
 import GameSearch from './Components/post/GameSearch';
 import CreateCommunity from './Components/post/CreateCommunity';
@@ -47,6 +48,7 @@ function App() {
           <Route path="/community/:communityId/members" element={<CommunityMemberList />}></Route>
           <Route path="/create-post" element={<PostForm />}></Route>
           <Route path="/users/:userId" element={<UserProfile />}></Route>
+          <Route path="/edit-profile" element={<EditProfileForm />} />
           <Route path="/users/:userId/followers" element={<UserFollowerList />}></Route>
           <Route path="/users/:userId/following" element={<UserFollowingList />}></Route>
           <Route path="/" element={<Navigate replace to="/login" />} />

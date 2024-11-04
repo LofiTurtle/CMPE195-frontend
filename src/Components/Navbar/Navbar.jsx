@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoMdNotificationsOutline } from 'react-icons/io';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUser } from '../slices/userSlice';
 
 import "./Navbar.css";
 
@@ -59,7 +60,6 @@ export const Navbar = () => {
             </div>
             <div className={`dropdown-menu ${accountMenuOpen ? 'active' : 'inactive'}`}>
               <ul>
-                <DropdownItem text={"My Profile"} to="" />
                 <DropdownItem text={"Settings"} to="/settings" />
                 <DropdownItem text={"Logout"} onClick={logout} />
               </ul>

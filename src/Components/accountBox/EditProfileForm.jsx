@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserProfile } from '../Components/slices/userSlice'; // Adjust the path if necessary
+import { updateUserProfile } from '../slices/userSlice'; // Adjust the path if necessary
 import { useNavigate } from 'react-router-dom';
 import './EditProfileForm.css'; // Create a CSS file for styling if needed
 

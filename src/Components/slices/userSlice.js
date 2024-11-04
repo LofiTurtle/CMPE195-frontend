@@ -10,6 +10,18 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
   }
 });
 
+export const updateUserProfile = createAsyncThunk(
+  'user/updateUserProfile',
+  async ({ username, email }) => {
+    try {
+      const updatedUser = await api.updateUserProfile({ username, email });
+      return updatedUser;
+    } catch (error) {
+      throw new Error(error.message || 'Failed to update user profile');
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
