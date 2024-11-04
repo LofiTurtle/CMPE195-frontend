@@ -1,0 +1,39 @@
+.edit-profile-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 1em;
+    background: #f9f9f9;
+    border-radius: 5px;
+  }
+  
+  .edit-profile-form h2 {
+    margin-bottom: 1em;
+  }
+  
+  .edit-profile-form form div {
+    margin-bottom: 1em;
+  }
+  
+  .edit-profile-form label {
+    display: block;
+    margin-bottom: 0.5em;
+  }
+  
+  .edit-profile-form input {
+    width: 100%;
+    padding: 0.5em;
+    box-sizing: border-box;
+  }
+  
+  .edit-profile-form button {
+    padding: 0.5em 1em;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .edit-profile-form button:hover {
+    background: #0056b3;
+  }
