@@ -1,4 +1,4 @@
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import SteamLoginIcon from '../assets/login-steam.png';
 import PostForm from './post/PostForm';
@@ -9,12 +9,14 @@ import { fetchUser } from '../Components/slices/userSlice'; // Adjust the path i
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const { username, status, error } = useSelector((state) => state.user);
+  const { userId, username, status, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchUser()); // Dispatch the fetchUser action, to get the slices
   }, [dispatch]);
+
+
 
   if (status === 'loading') {
     return <div>Loading...</div>;
@@ -38,7 +40,7 @@ const Dashboard = () => {
   return (
     <div className='main-content'>
       <h1>Welcome, {username}</h1>
-      {username && <Link to={`/users/${username}`}>View your profile</Link>}
+      {username && <Link to={`/users/${userId}`}>View your profile</Link>}
       <h2>Recent posts from your communities:</h2>
       <PostList communityId={1}></PostList>
       {/* TODO post list for all followed communities */}
