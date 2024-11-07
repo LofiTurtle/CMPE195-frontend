@@ -42,6 +42,19 @@ const api = {
     }
   },
 
+  updateUserProfile: async ({ username, email }) => {
+    const response = await axios.put(`${API_BASE_URL}/users/me`, {
+      username,
+      email,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
+
   getUser: async (userId) => {
     const response = await axiosApi.get(`/users/${userId}`);
     return response.data;
