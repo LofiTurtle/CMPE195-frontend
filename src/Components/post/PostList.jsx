@@ -4,21 +4,42 @@ import './PostList.css';
 import api from '../../Services/api';
 import { AiFillLike } from 'react-icons/ai';
 
-function PostList({ communityId }) {
+function PostList({ homepage, userId, communityId }) {
+  // Exactly 1 prop should be defined
+
   const [posts, setPosts] = useState([]);
   const [comment, setComment] = useState({});
   const [newComment, setNewComment] = useState('');
+  const [sortType, setSortType] = useState('Hot');
 
-  const backendUrl = 'http://127.0.0.1:5000';
+  const sortTypeOptions = [
+    'Hot',
+    'Top',
+    'New'
+  ];
 
   useEffect(() => {
     const getPosts = async () => {
-      const { posts } = await api.getCommunityPosts(communityId);
+      let posts;
+      const sortTypeLowercase = String(sortType).toLowerCase();
+      if (homepage) {
+        ({ posts } = await api.getHomepage(sortTypeLowercase));
+      } else if (userId !== null && userId !== undefined) {
+        ({ posts } = await api.getUserPosts(userId, sortTypeLowercase));
+      } else if (communityId !== null && communityId !== undefined) {
+        ({ posts } = await api.getCommunityPosts(communityId, sortTypeLowercase));
+      } else {
+        throw new Error('Missing prop for PostList.jsx');
+      }
       setPosts(posts);
     };
 
     getPosts();
-  }, [communityId]);
+  }, [communityId, homepage, userId, sortType]);
+
+  const handleSortTypeChange = (event) => {
+    setSortType(event.target.value)
+  }
 
   const handleLike = async (postId) => {
     try {
@@ -46,12 +67,26 @@ function PostList({ communityId }) {
 
   return (
     <div className="post-list">
-      <h2>Posts</h2>
+      <div>
+        <span>
+          Sorting by: 
+        </span>
+        <select 
+          value={sortType}
+          onChange={handleSortTypeChange}
+        >
+          {sortTypeOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
       {posts.map(post => (
         <div className="post" key={post.id}>
           {post.media === 'image' ? <img
             className="post-image"
-            src={`${backendUrl}/api/posts/${post.id}/image`}
+            src={`/api/posts/${post.id}/image`}
             alt={post.title}
             onError={(e) => { e.target.style.display = 'none'; }}
           /> : null}

@@ -4,6 +4,7 @@ import SteamLoginIcon from '../assets/login-steam.png';
 import PostForm from './post/PostForm';
 import PostList from './post/PostList';
 import './Dashboard.css';
+import api from '../Services/api';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUser } from '../Components/slices/userSlice'; // Adjust the path if necessary
 
@@ -42,7 +43,7 @@ const Dashboard = () => {
       <h1>Welcome, {username}</h1>
       {username && <Link to={`/users/${userId}`}>View your profile</Link>}
       <h2>Recent posts from your communities:</h2>
-      <PostList communityId={1}></PostList>
+      <PostList homepage={true}></PostList>
       {/* TODO post list for all followed communities */}
       
       {/* <div className="steamAuth">
