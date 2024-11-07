@@ -165,6 +165,20 @@ const api = {
     return response.data;
   },
 
+  communitySearchResults: async (query) => {
+    const response = await axiosApi.get(`/search/communities`, { params: {
+      q: query
+    }});
+    return response.data;
+  },
+
+  userSearchResults: async (query) => {
+    const response = await axiosApi.get(`/search/users`, { params: {
+      q: query
+    }});
+    return response.data;
+  },
+
   gameSearchResults: async (query) => {
     const response = await axiosApi.get(`/search/games`, { params: {
       q: query
