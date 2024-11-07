@@ -166,7 +166,7 @@ const api = {
   },
 
   gameSearchResults: async (query) => {
-    const response = await axiosApi.get(`/game-search`, { params: {
+    const response = await axiosApi.get(`/search/games`, { params: {
       q: query
     }});
     return response.data;
