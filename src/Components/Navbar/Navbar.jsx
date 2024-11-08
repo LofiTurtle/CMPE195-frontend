@@ -2,20 +2,24 @@ import React, {useEffect, useRef, useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoMdNotificationsOutline } from 'react-icons/io';
+import {useDispatch, useSelector} from "react-redux";
 
 
 import "./Navbar.css";
 import SearchBox from './SearchBox';
+import {fetchUser} from "../slices/userSlice.js";
 
 export const Navbar = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
+  const { userId, username, status, error } = useSelector((state) => state.user);
 
   const navigate = useNavigate(); // To navigate after logout
+  const dispatch = useDispatch();
 
   const accountMenuRef = useRef(null);
 
-    useEffect(() => {
+  useEffect(() => {
     // Handle clicking outside the search type dropdown
     const handleClickOutside = (event) => {
       if (
@@ -35,6 +39,10 @@ export const Navbar = () => {
       };
     }
   }, [accountMenuOpen]);
+
+  useEffect(() => {
+    dispatch(fetchUser()); // Dispatch the fetchUser action, to get the slices
+  }, [dispatch]);
 
   const logout = async () => {
     fetch('/api/logout', { method: 'POST' })
@@ -71,7 +79,7 @@ export const Navbar = () => {
               
               onClick={() => { setAccountMenuOpen(!accountMenuOpen); }}
             >
-               <FaUserCircle size={24} color="var(--primary-text-color)" />
+              <img src={`/api/users/${userId}/profile-picture`} alt="" className={'w-9'}/>
             </div>
             <div className={`dropdown-menu ${accountMenuOpen ? 'active' : 'inactive'}`}>
               <ul>
