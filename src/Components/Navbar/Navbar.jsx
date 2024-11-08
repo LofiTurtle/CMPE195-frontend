@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoMdNotificationsOutline } from 'react-icons/io';
@@ -12,6 +12,29 @@ export const Navbar = () => {
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
 
   const navigate = useNavigate(); // To navigate after logout
+
+  const accountMenuRef = useRef(null);
+
+    useEffect(() => {
+    // Handle clicking outside the search type dropdown
+    const handleClickOutside = (event) => {
+      if (
+        accountMenuRef.current &&
+        !accountMenuRef.current.contains(event.target) &&
+        accountMenuOpen
+      ) {
+        setAccountMenuOpen(false);
+      }
+    };
+
+    if (accountMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [accountMenuOpen]);
 
   const logout = async () => {
     fetch('/api/logout', { method: 'POST' })
@@ -50,7 +73,7 @@ export const Navbar = () => {
 
         {/* Account Section */}
         <li>
-          <div className='menu-container'>
+          <div className='menu-container' ref={accountMenuRef}>
             <div
               className='menu-trigger'
               
