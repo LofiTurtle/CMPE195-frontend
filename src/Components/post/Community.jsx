@@ -83,34 +83,29 @@ const Community = () => {
             >
               Create Post
             </Link>
+            <div
+              className="flex items-end gap-2 px-4 py-2 ml-auto"
+            >
+              <div
+                onClick={() => navigate(`/community/${communityId}/members`)}
+                className="flex items-center gap-3 cursor-pointer"
+              >
+                <span className=" font-semibold">{community.num_users.toLocaleString()}</span>
+                <span className=""> Community Members</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Game info and community stats */}
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
-        <div className="md:col-span-2 space-y-4">
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      {/* Game info */}
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-4">
             <h2 className="text-xl font-semibold mb-2">{community.game.name}</h2>
             <p className="text-gray-600 text-sm mb-4">
               Released {new Date(Date.parse(community.game.first_released_date)).toLocaleDateString()}
             </p>
             <p className="text-gray-700">{community.game.summary}</p>
           </div>
-        </div>
-
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-          <div
-            onClick={() => navigate(`/community/${communityId}/members`)}
-            className="flex items-center gap-3 text-gray-700 hover:text-gray-900 cursor-pointer"
-          >
-            <div>
-              <div className="font-semibold">{community.num_users.toLocaleString()}</div>
-              <div className="text-sm text-gray-500">Community Members</div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Posts section */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
