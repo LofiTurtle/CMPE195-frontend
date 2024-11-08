@@ -29,17 +29,8 @@ axiosApi.interceptors.response.use(
 const api = {
   
   getMe: async () => {
-    try {
-      const response = await axiosApi.get('/me');
-      console.log('API response:', response); // Log the response
-      if (response.status !== 200) {
-        throw new Error('Failed to fetch user');
-      }
-      return response.data;
-    } catch (error) {
-      console.error('Error in getMe:', error); // Log the error
-      throw error;
-    }
+    const response = await axiosApi.get('/me');
+    return response.data;
   },
 
   getUser: async (userId) => {

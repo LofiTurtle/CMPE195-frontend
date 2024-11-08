@@ -5,6 +5,7 @@ import { IoMdNotificationsOutline } from 'react-icons/io';
 
 
 import "./Navbar.css";
+import SearchBox from './SearchBox';
 
 export const Navbar = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
@@ -29,7 +30,7 @@ export const Navbar = () => {
       
       
       <div className='search-bar'>
-        <input type='text' placeholder='Search...' />
+        <SearchBox />
       </div>
 
       <ul className='navbar-items'>
