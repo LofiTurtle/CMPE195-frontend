@@ -52,6 +52,7 @@ const CreateCommunity = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-4">
+      <h1 className="text-center w-full">Create a new community</h1>
       {gameInfo && (
         <div className="mb-6 border border-gray-300 rounded-md overflow-hidden">
           <img
