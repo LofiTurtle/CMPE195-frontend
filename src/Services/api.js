@@ -29,17 +29,8 @@ axiosApi.interceptors.response.use(
 const api = {
   
   getMe: async () => {
-    try {
-      const response = await axiosApi.get('/me');
-      console.log('API response:', response); // Log the response
-      if (response.status !== 200) {
-        throw new Error('Failed to fetch user');
-      }
-      return response.data;
-    } catch (error) {
-      console.error('Error in getMe:', error); // Log the error
-      throw error;
-    }
+    const response = await axiosApi.get('/me');
+    return response.data;
   },
 
   getUser: async (userId) => {
@@ -165,8 +156,22 @@ const api = {
     return response.data;
   },
 
+  communitySearchResults: async (query) => {
+    const response = await axiosApi.get(`/search/communities`, { params: {
+      q: query
+    }});
+    return response.data;
+  },
+
+  userSearchResults: async (query) => {
+    const response = await axiosApi.get(`/search/users`, { params: {
+      q: query
+    }});
+    return response.data;
+  },
+
   gameSearchResults: async (query) => {
-    const response = await axiosApi.get(`/game-search`, { params: {
+    const response = await axiosApi.get(`/search/games`, { params: {
       q: query
     }});
     return response.data;
