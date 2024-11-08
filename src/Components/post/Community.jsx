@@ -101,9 +101,6 @@ const Community = () => {
       {/* Game info */}
           <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-4">
             <h2 className="text-xl font-semibold mb-2">{community.game.name}</h2>
-            <p className="text-gray-600 text-sm mb-4">
-              Released {new Date(Date.parse(community.game.first_released_date)).toLocaleDateString()}
-            </p>
             <p className="text-gray-700">{community.game.summary}</p>
           </div>
 
