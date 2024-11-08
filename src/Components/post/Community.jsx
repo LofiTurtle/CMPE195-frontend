@@ -7,7 +7,7 @@ import api from '../../Services/api';
 const Community = () => {
   const { communityId } = useParams();
 
-  const [community, setCommunity] = useState({name: 'Loading...', num_users: 0});
+  const [community, setCommunity] = useState(null);
   const [isFollowing, setIsFollowing] = useState(null);
 
   const navigate = useNavigate();
@@ -40,14 +40,82 @@ const Community = () => {
     }
   }
 
+  if (!community) {
+    return (
+        <p>Loading...</p>
+    )
+  }
+
   return (
-    <div>
-      <h1>{community.name}</h1>
-      <button onClick={toggleFollowCommunity}>{isFollowing ? 'Unfollow' : 'Follow'} Community</button>
-      <br />
-      <Link to={`/create-post`}>Create New Post</Link>
-      <p onClick={() => navigate(`/community/${communityId}/members`)} style={{cursor: 'pointer'}}>{community.num_users} members</p>
-      <PostList communityId={communityId}></PostList>
+    <div className="max-w-4xl mx-auto p-4">
+      {/* Hero section with game artwork */}
+      <div className="relative mb-8 rounded-lg overflow-hidden">
+        {community.game.artwork ? (
+          <div className="w-full h-64">
+            <img
+              src={community.game.artwork}
+              alt={community.game.name}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-40" />
+          </div>
+        ) : (
+          <div className="w-full h-64 bg-gray-200" />
+        )}
+
+        {/* Community name and action buttons overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+          <h1 className="text-4xl font-bold mb-4 primary-text-inverted">{community.name}</h1>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleFollowCommunity}
+              className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                isFollowing
+                  ? 'bg-white text-gray-900 hover:bg-gray-100'
+                  : 'bg-blue-500 hover:bg-blue-600 text-white'
+              }`}
+            >
+              {isFollowing ? 'Unfollow' : 'Follow'} Community
+            </button>
+            <Link
+              to="/create-post"
+              className="flex items-center gap-2 px-4 py-2 bg-gray-800 bg-opacity-50 hover:bg-opacity-70 rounded-md transition-colors"
+            >
+              Create Post
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Game info and community stats */}
+      <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="md:col-span-2 space-y-4">
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <h2 className="text-xl font-semibold mb-2">{community.game.name}</h2>
+            <p className="text-gray-600 text-sm mb-4">
+              Released {new Date(community.game.first_released_date).toLocaleDateString()}
+            </p>
+            <p className="text-gray-700">{community.game.summary}</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+          <div
+            onClick={() => navigate(`/community/${communityId}/members`)}
+            className="flex items-center gap-3 text-gray-700 hover:text-gray-900 cursor-pointer"
+          >
+            <div>
+              <div className="font-semibold">{community.num_users.toLocaleString()}</div>
+              <div className="text-sm text-gray-500">Community Members</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Posts section */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <PostList communityId={communityId} />
+      </div>
     </div>
   );
 }
