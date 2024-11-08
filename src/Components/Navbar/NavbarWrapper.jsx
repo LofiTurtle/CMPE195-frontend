@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 
 const NavbarWrapper = () => {
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="flex flex-col">
             <Navbar/>
             <main className="flex-1 p-4">
                 <Outlet/>
