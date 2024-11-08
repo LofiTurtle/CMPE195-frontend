@@ -59,17 +59,6 @@ export const Navbar = () => {
       <ul className='navbar-items'>
        
       <li><button onClick={() => navigate('/create-post')}>New Post</button></li>
-      <li>
-            <div className='menu-container'>
-              <div
-                className='menu-trigger'
-                onClick={() => { setNotificationMenuOpen(!notificationMenuOpen); }}
-              >
-                {/* Notification icon */}
-                <IoMdNotificationsOutline size={24} color="var(--primary-text-color)" />
-              </div>
-            </div> 
-          </li>
 
         {/* Account Section */}
         <li>
