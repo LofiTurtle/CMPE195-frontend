@@ -43,7 +43,10 @@ export const Navbar = () => {
           throw new Error();
         }
       })
-      .then(() => navigate('/'))
+      .then(() => {
+        navigate('/');
+        setAccountMenuOpen(false);
+      })
       .catch(() => console.log('Error logging out.'));
   };
 
