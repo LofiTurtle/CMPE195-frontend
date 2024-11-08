@@ -79,8 +79,7 @@ export const Navbar = () => {
           </div>
           <div className={`dropdown-menu ${accountMenuOpen ? 'active' : 'inactive'}`}>
             <ul>
-              <DropdownItem text={"My Profile"} to=""/>
-              <DropdownItem text={"Settings"} to="/settings"/>
+              <DropdownItem text={"My Profile"} to={`/users/${userId}`}/>
               <DropdownItem text={"Logout"} onClick={logout}/>
             </ul>
           </div>
@@ -91,7 +90,7 @@ export const Navbar = () => {
 };
 
 function DropdownItem(props) {
-  return (<li className='dropdown-item'>
+  return (<li className='dropdown-item cursor-pointer'>
     {props.to ? (<Link to={props.to}>{props.text}</Link>) : (<a onClick={props.onClick}>{props.text}</a>)}
   </li>);
 }
