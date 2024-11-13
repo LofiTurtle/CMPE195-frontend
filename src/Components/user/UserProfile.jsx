@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { hasDiscordAccount, getCurrentUserId } from '../../utils';
 import api from '../../Services/api';
+import PostList from '../post/PostList';
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -69,6 +70,8 @@ const UserProfile = () => {
     }
   };
 
+
+
   if (!user) {
     return <h1>Loading user...</h1>;
   }
@@ -106,6 +109,8 @@ const UserProfile = () => {
       {showDiscordDisconnectButton && (
         <button onClick={handleDiscordDisconnect}>Disconnect Discord Account</button>
       )}
+      <br />
+      <PostList userId={userId} />
     </div>
   );
 };

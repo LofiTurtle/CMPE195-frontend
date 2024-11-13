@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoMdNotificationsOutline } from 'react-icons/io';
@@ -6,12 +6,36 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchUser } from '../slices/userSlice';
 
 import "./Navbar.css";
+import SearchBox from './SearchBox';
 
 export const Navbar = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
 
   const navigate = useNavigate(); // To navigate after logout
+
+  const accountMenuRef = useRef(null);
+
+    useEffect(() => {
+    // Handle clicking outside the search type dropdown
+    const handleClickOutside = (event) => {
+      if (
+        accountMenuRef.current &&
+        !accountMenuRef.current.contains(event.target) &&
+        accountMenuOpen
+      ) {
+        setAccountMenuOpen(false);
+      }
+    };
+
+    if (accountMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [accountMenuOpen]);
 
   const logout = async () => {
     fetch('/api/logout', { method: 'POST' })
@@ -20,7 +44,10 @@ export const Navbar = () => {
           throw new Error();
         }
       })
-      .then(() => navigate('/'))
+      .then(() => {
+        navigate('/');
+        setAccountMenuOpen(false);
+      })
       .catch(() => console.log('Error logging out.'));
   };
 
@@ -30,27 +57,16 @@ export const Navbar = () => {
       
       
       <div className='search-bar'>
-        <input type='text' placeholder='Search...' />
+        <SearchBox />
       </div>
 
       <ul className='navbar-items'>
        
       <li><button onClick={() => navigate('/create-post')}>New Post</button></li>
-      <li>
-            <div className='menu-container'>
-              <div
-                className='menu-trigger'
-                onClick={() => { setNotificationMenuOpen(!notificationMenuOpen); }}
-              >
-                {/* Notification icon */}
-                <IoMdNotificationsOutline size={24} color="var(--primary-text-color)" />
-              </div>
-            </div> 
-          </li>
 
         {/* Account Section */}
         <li>
-          <div className='menu-container'>
+          <div className='menu-container' ref={accountMenuRef}>
             <div
               className='menu-trigger'
               

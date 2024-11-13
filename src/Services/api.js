@@ -29,17 +29,8 @@ axiosApi.interceptors.response.use(
 const api = {
   
   getMe: async () => {
-    try {
-      const response = await axiosApi.get('/me');
-      console.log('API response:', response); // Log the response
-      if (response.status !== 200) {
-        throw new Error('Failed to fetch user');
-      }
-      return response.data;
-    } catch (error) {
-      console.error('Error in getMe:', error); // Log the error
-      throw error;
-    }
+    const response = await axiosApi.get('/me');
+    return response.data;
   },
 
   updateUserProfile: async ({ username, email }) => {
@@ -60,8 +51,10 @@ const api = {
     return response.data;
   },
 
-  getUserPosts: async (userId) => {
-    const response = await axiosApi.get(`/users/${userId}/posts`);
+  getUserPosts: async (userId, sortType) => {
+    const response = await axiosApi.get(`/users/${userId}/posts`, {params: {
+      sort: sortType
+    }});
     return response.data;
   },
 
@@ -70,13 +63,17 @@ const api = {
     return response.data;
   },
 
-  getCommunityPosts: async (communityId) => {
-    const response = await axiosApi.get(`/communities/${communityId}/posts`);
+  getCommunityPosts: async (communityId, sortType) => {
+    const response = await axiosApi.get(`/communities/${communityId}/posts`, {params: {
+      sort: sortType
+    }});
     return response.data;
   },
 
-  getHomepage: async () => {
-    const response = await axiosApi.get('/homepage');
+  getHomepage: async (sortType) => {
+    const response = await axiosApi.get('/homepage', {params: {
+      sort: sortType
+    }});
     return response.data;
   },
 
@@ -172,8 +169,22 @@ const api = {
     return response.data;
   },
 
+  communitySearchResults: async (query) => {
+    const response = await axiosApi.get(`/search/communities`, { params: {
+      q: query
+    }});
+    return response.data;
+  },
+
+  userSearchResults: async (query) => {
+    const response = await axiosApi.get(`/search/users`, { params: {
+      q: query
+    }});
+    return response.data;
+  },
+
   gameSearchResults: async (query) => {
-    const response = await axiosApi.get(`/game-search`, { params: {
+    const response = await axiosApi.get(`/search/games`, { params: {
       q: query
     }});
     return response.data;
