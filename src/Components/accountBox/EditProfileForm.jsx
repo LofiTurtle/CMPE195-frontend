@@ -1,9 +1,9 @@
 // src/Components/accountBox/EditProfileForm.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserProfile, resetStatus } from '../slices/userSlice'; // Adjust the path if necessary
+import { updateUserProfile, resetStatus } from '../slices/userSlice';
 import { useNavigate } from 'react-router-dom';
-import './EditProfileForm.css'; // Ensure this file exists for styling
+import './EditProfileForm.css';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -12,20 +12,25 @@ const EditProfileForm = () => {
 
   const [newUsername, setNewUsername] = useState(username || '');
   const [newEmail, setNewEmail] = useState(email || '');
+  const [image, setImage] = useState(null);
   const [formError, setFormError] = useState('');
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!newUsername.trim() || !newEmail.trim()) {
       setFormError('Username and Email are required.');
       return;
     }
-    // Dispatch the update action
-    dispatch(updateUserProfile({ username: newUsername, email: newEmail }));
+
+    const formData = new FormData();
+    formData.append('username', newUsername);
+    formData.append('email', newEmail);
+    if (image) {
+      formData.append('profile_image', image);
+    }
+
+    dispatch(updateUserProfile(formData));
   };
 
   return (
@@ -53,6 +58,17 @@ const EditProfileForm = () => {
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
             required
+          />
+        </div>
+
+        {/* Profile Image Field */}
+        <div className="form-group">
+          <label htmlFor="profileImage">Profile Image:</label>
+          <input
+            type="file"
+            id="profileImage"
+            accept="image/*"
+            onChange={(e) => setImage(e.target.files[0])}
           />
         </div>
 
