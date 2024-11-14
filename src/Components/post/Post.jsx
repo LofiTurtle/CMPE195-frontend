@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './Post.css'
+import CommentList from './CommentList';
 import api from '../../Services/api';
 import { useSelector } from 'react-redux';
 
@@ -23,21 +24,22 @@ function Post() {
   }
 
   return (
-    <div className="post-details">
-      <h2>{post.title}</h2>
-      <span>Community: </span>
-      <Link to={`/community/${post.community.id}`}>
-        {post.community.name}
-      </Link>
-      <br />
-      <span>Author: </span>
-      <span>
-        <Link to={`/users/${post.author.id}`}>
-          {post.author.username}
+    <div>
+      <div className="post-details">
+        <h2>{post.title}</h2>
+        <span>Community: </span>
+        <Link to={`/community/${post.community.id}`}>
+          {post.community.name}
         </Link>
-      </span>
-      <p>{post.content}</p>
-      <div>
+        <br />
+        <span>Author: </span>
+        <span>
+          <Link to={`/users/${post.author.id}`}>
+            {post.author.username}
+          </Link>
+        </span>
+        <p>{post.content}</p>
+        <CommentList postId={postId}/>
       </div>
     </div>
 
