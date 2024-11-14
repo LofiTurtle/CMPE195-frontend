@@ -81,9 +81,17 @@ const api = {
     return response.data;
   },
 
-  createComment: async (content, postId) => {
+  getComments: async (postId) => {
+    const response = await axiosApi.get(`/posts/${postId}/comments`)
+    return response.data;
+  },
+
+  createComment: async (content, created_at, parentId, author_id, postId) => {
     const response = await axiosApi.post('/comments', {
-      content,
+      content: content,
+      created_at: created_at,
+      parent_id: parentId,
+      author_id: author_id,
       post_id: postId
     });
     return response.data;
