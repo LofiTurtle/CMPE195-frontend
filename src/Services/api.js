@@ -33,9 +33,12 @@ const api = {
     return response.data;
   },
 
+  getUsers: async () => {
+    const response = await axiosApi.get('/users');
+    return response.data;
+  },
 
-  
-  updateUserProfile: async ({ username, bio, profile_picture }) => {
+  updateUserProfile: async (username, bio, profile_picture) => {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('bio', bio);
@@ -55,6 +58,11 @@ const api = {
     const response = await axiosApi.get(`/users/${userId}/posts`, {params: {
       sort: sortType
     }});
+    return response.data;
+  },
+
+  getCommunities: async () => {
+    const response = await axiosApi.get(`/communities`);
     return response.data;
   },
 
@@ -99,12 +107,10 @@ const api = {
     return response.data;
   },
 
-  createComment: async (content, created_at, parentId, author_id, postId) => {
+  createComment: async (content, parentId, postId) => {
     const response = await axiosApi.post('/comments', {
       content: content,
-      created_at: created_at,
       parent_id: parentId,
-      author_id: author_id,
       post_id: postId
     });
     return response.data;

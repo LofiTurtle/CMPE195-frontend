@@ -25,9 +25,15 @@ const UserFollowerList = () => {
   }, []);
 
   return (
-    <div>
-      <h1 onClick={() => navigate(`/users/${userId}`)}>{user.name} Followers:</h1>
-      <UserCardList users={users} />
+    <div
+      className={"flex justify-center"}
+    >
+      <div
+        className="max-w-xl"
+      >
+        <h1 className={"cursor-pointer"} onClick={() => navigate(`/users/${userId}`)}>{user.username} followers:</h1>
+        <UserCardList users={users}/>
+      </div>
     </div>
   )
 }

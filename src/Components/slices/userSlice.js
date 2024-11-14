@@ -1,5 +1,5 @@
 // src/slices/userSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import api from '../../Services/api'; // Adjust the path if necessary
 
 // Thunk to fetch the current user
@@ -15,10 +15,9 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
 // Thunk to update the user profile
 export const updateUserProfile = createAsyncThunk(
   'user/updateUserProfile',
-  async ({ username, email }, { rejectWithValue }) => {
+  async ({ newUsername, newBio, image }, { rejectWithValue }) => {
     try {
-      const updatedUser = await api.updateUserProfile({ username, email });
-      return updatedUser;
+      return await api.updateUserProfile(newUsername, newBio, image);
     } catch (error) {
       return rejectWithValue(error.response.data.error || 'Failed to update user profile');
     }

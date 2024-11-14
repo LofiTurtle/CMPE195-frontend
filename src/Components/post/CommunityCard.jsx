@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const UserCard = ({ user }) => {
+const CommunityCard = ({ community }) => {
   const navigate = useNavigate();
 
   const handleSelect = () => {
-    navigate(`/users/${user.id}`);
+    navigate(`/community/${community.id}`);
   }
 
   return (
@@ -15,17 +15,17 @@ const UserCard = ({ user }) => {
     >
       <div className="flex gap-2">
           <img
-            src={`/api/users/${user.id}/profile-picture`}
+            src={community.game.cover}
             alt=""
             className="w-10 h-10 object-cover rounded flex-shrink-0"
           />
         <div className="min-w-0 flex-1">
-          <div className="font-medium truncate">{user.username}</div>
-          <div className="text-sm text-gray-600 truncate">{user.profile.bio}</div>
+          <div className="font-medium truncate">{community.name}</div>
+          <div className="text-sm text-gray-600 truncate">{community.game.name}</div>
         </div>
       </div>
     </button>
   )
 }
 
-export default UserCard;
+export default CommunityCard;
