@@ -3,9 +3,12 @@ import CommentItem from './CommentItem';
 import api from '../../Services/api';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUser } from '../../Components/slices/userSlice';
+import CommentInput from "./CommentInput.jsx";
 
 function CommentList({ postId }) {
     const [comments, setComments] = useState([]);
+    const [showReplyInput, setShowReplyInput] = useState(false); // State to control reply input visibility
+    const [triggerCommentRefresh, setTriggerCommentRefresh] = useState(0);
     const dispatch = useDispatch();
     const { userId, username, status, error } = useSelector((state) => state.user);
     useEffect(() => {
@@ -14,11 +17,16 @@ function CommentList({ postId }) {
             setComments(commentsData);  // Ensure this is an array of comments
         };
         getComments();
-    }, [postId]);
+    }, [postId, triggerCommentRefresh]);
 
     useEffect(() => {
         dispatch(fetchUser()); // Dispatch the fetchUser action, to get the slices
     }, [dispatch]);
+
+    const handleTopLevelReplySubmit = async (replyContent) => {
+        await handleReplySubmit(null, replyContent);
+        setTriggerCommentRefresh(triggerCommentRefresh + 1);
+    }
 
     const handleReplySubmit = async (parentId, replyContent) => {
         const createComment = async () => {
@@ -65,16 +73,30 @@ function CommentList({ postId }) {
         await createComment();
     };
 
-    if (!comments || comments.length === 0) {
-        return <div>No comments available</div>;
-    }
+    // if (!comments || comments.length === 0) {
+    //     return <div>No comments available</div>;
+    // }
 
     return (
         <div className="comment-list">
+            {/* Reply button to show the comment input */}
+                <button
+                    onClick={() => setShowReplyInput(!showReplyInput)}
+                    className="reply-btn"
+                >
+                    Reply
+                </button>
+            {/* Render reply input if showReplyInput is true */}
+                {showReplyInput && (
+                    <CommentInput
+                        onSubmit={handleTopLevelReplySubmit}
+                        closeInput={() => setShowReplyInput(false)}
+                    />
+                )}
             {comments.map((comment) => (
-                <CommentItem 
-                    key={comment.id} 
-                    comment={comment} 
+                <CommentItem
+                    key={comment.id}
+                    comment={comment}
                     onReplySubmit={handleReplySubmit} // Pass the reply submit handler
                 />
             ))}
