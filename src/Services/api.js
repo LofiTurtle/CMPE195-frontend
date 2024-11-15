@@ -86,12 +86,10 @@ const api = {
     return response.data;
   },
 
-  createComment: async (content, created_at, parentId, author_id, postId) => {
+  createComment: async (content, parentId, postId) => {
     const response = await axiosApi.post('/comments', {
       content: content,
-      created_at: created_at,
       parent_id: parentId,
-      author_id: author_id,
       post_id: postId
     });
     return response.data;

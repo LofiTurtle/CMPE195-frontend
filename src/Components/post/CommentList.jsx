@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CommentItem from './CommentItem'; // Adjust path as necessary
+import CommentItem from './CommentItem';
 import api from '../../Services/api';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUser } from '../../Components/slices/userSlice';
@@ -20,11 +20,11 @@ function CommentList({ postId }) {
         dispatch(fetchUser()); // Dispatch the fetchUser action, to get the slices
     }, [dispatch]);
 
-    const handleReplySubmit = (parentId, replyContent) => {
+    const handleReplySubmit = async (parentId, replyContent) => {
         const createComment = async () => {
             try {
                 // Make API call to create a new comment
-                const { comment } = await api.createComment(replyContent, new Date().toISOString().replace("Z", "+00:00"), parentId, userId, postId);
+                const { comment } = await api.createComment(replyContent, parentId, postId);
                 
                 // Prepare the newReply object
                 const newReply = {
@@ -62,7 +62,7 @@ function CommentList({ postId }) {
             }
         };
 
-        createComment();
+        await createComment();
     };
 
     if (!comments || comments.length === 0) {
