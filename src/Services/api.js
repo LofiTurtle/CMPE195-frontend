@@ -35,7 +35,7 @@ const api = {
 
 
   
-  updateUserProfile: async ({ username, bio, profile_picture }) => {
+  updateUserProfile: async (username, bio, profile_picture) => {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('bio', bio);
