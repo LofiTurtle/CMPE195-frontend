@@ -33,6 +33,11 @@ const api = {
     return response.data;
   },
 
+  getUsers: async () => {
+    const response = await axiosApi.get('/users');
+    return response.data;
+  },
+
   getUser: async (userId) => {
     const response = await axiosApi.get(`/users/${userId}`);
     return response.data;
@@ -42,6 +47,11 @@ const api = {
     const response = await axiosApi.get(`/users/${userId}/posts`, {params: {
       sort: sortType
     }});
+    return response.data;
+  },
+
+  getCommunities: async () => {
+    const response = await axiosApi.get(`/communities`);
     return response.data;
   },
 

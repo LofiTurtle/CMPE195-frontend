@@ -94,6 +94,17 @@ const SearchBox = () => {
     clearFields();
   };
 
+  const handleViewAll = () => {
+    if (selectedType === searchTypes[0]) {
+      navigate(`/community`);
+    } else if (selectedType === searchTypes[1]) {
+      navigate(`/users`);
+    } else if (selectedType === searchTypes[2]) {
+      navigate(`/create-community`);
+    }
+    clearFields();
+  }
+
   const clearFields = () => {
     setSelectedType(searchTypes[0]);
     setSearchTerm('');
@@ -138,6 +149,16 @@ const SearchBox = () => {
           placeholder="Search..."
           className="flex-1 px-3 py-2 border rounded"
         />
+
+        {/*  "View all" button */}
+        {selectedType !== searchTypes[2] && (
+          <button
+            onClick={handleViewAll}
+            className="px-3 py-2 border rounded bg-white"
+          >
+            View all
+          </button>
+        )}
       </div>
 
       {/* Loading Indicator */}

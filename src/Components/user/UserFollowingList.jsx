@@ -31,7 +31,7 @@ const UserFollowingList = () => {
       <div
         className="max-w-xl"
       >
-        <h1 onClick={() => navigate(`/users/${userId}`)}>{user.name} Following:</h1>
+        <h1 className={"cursor-pointer"} onClick={() => navigate(`/users/${userId}`)}>{user.username} following:</h1>
         <UserCardList users={users}/>
       </div>
     </div>

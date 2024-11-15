@@ -17,6 +17,8 @@ import UserFollowerList from './Components/user/UserFollowerList';
 import UserFollowingList from './Components/user/UserFollowingList';
 import TestSearch from './Components/tests/TestSearch';
 import NavbarWrapper from "./Components/Navbar/NavbarWrapper.jsx";
+import CommunityCardList from "./Components/post/CommunityCardList.jsx";
+import AllUserCardList from "./Components/user/AllUserCardList.jsx";
 
 
 const AppContainer = styled.div`
@@ -49,6 +51,8 @@ function App() {
             <Route path="/" element={<Navigate replace to="/login" />} />
             <Route path="/game-search" element={<GameSearch />} />
             <Route path="/create-community/:gameId" element={<CreateCommunity />} />
+            <Route path="/community" element={<CommunityCardList />} />
+            <Route path="/users" element={<AllUserCardList />} />
 
             <Route path='/tests/search' element={<TestSearch />} />
             <Route path='/tests/following' element={<TestFollowing />} />
