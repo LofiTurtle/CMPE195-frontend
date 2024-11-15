@@ -44,11 +44,11 @@ export const Navbar = () => {
           throw new Error();
         }
       })
-      .then(() => {
+      .catch(() => console.log('Error logging out.'))
+      .finally(() => {
         navigate('/');
         setAccountMenuOpen(false);
-      })
-      .catch(() => console.log('Error logging out.'));
+      });
   };
 
   return (<nav>
