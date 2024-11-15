@@ -26,6 +26,7 @@ function CommentList({ postId }) {
     const handleTopLevelReplySubmit = async (replyContent) => {
         await handleReplySubmit(null, replyContent);
         setTriggerCommentRefresh(triggerCommentRefresh + 1);
+        setShowReplyInput(false);
     }
 
     const handleReplySubmit = async (parentId, replyContent) => {
@@ -72,10 +73,6 @@ function CommentList({ postId }) {
 
         await createComment();
     };
-
-    // if (!comments || comments.length === 0) {
-    //     return <div>No comments available</div>;
-    // }
 
     return (
         <div className="comment-list">
