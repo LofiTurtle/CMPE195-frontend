@@ -38,6 +38,17 @@ const api = {
     return response.data;
   },
 
+  updateUserProfile: async (username, bio, profile_picture) => {
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('bio', bio);
+    if (profile_picture) {
+      formData.append('profile_picture', profile_picture);
+    }
+    const response = await axiosApi.put('/me', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+    return response.data;
+  },
+
   getUser: async (userId) => {
     const response = await axiosApi.get(`/users/${userId}`);
     return response.data;
