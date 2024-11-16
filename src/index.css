@@ -6,7 +6,6 @@
 html,
 body {
   width: 100%;
-  height: 100%;
   overflow-x: hidden;
   background-color: var(--primary-bg);
   
@@ -34,14 +33,20 @@ code {
 
 #root {
   width: 100%;
-  height: 100%;
   --primary-bg: #f8f8f8;
   --secondary-bg: #9BBB63;
   --primary-text-color: #545190;
+  --primary-text-inverted: #e3e1ff;
   --secondary-text-color: #20221B;
   --border-radius: 8px;
   --speed: 550ms;
   --border-color: #E88D67;
-  
+}
 
+.primary-text-color {
+  color: var(--primary-text-color);
+}
+
+.primary-text-inverted {
+  color: var(--primary-text-inverted);
 }

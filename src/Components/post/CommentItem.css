@@ -1,0 +1,114 @@
+/* CommentItem.css */
+.comment {
+    border-left: 2px solid #ccc; /* Add a left border for comments */
+    padding: 10px 15px; /* Add padding for better spacing */
+    margin: 10px 0; /* Margin between comments */
+    background-color: #f9f9f9; /* Light background color */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.comment-author {
+    font-weight: bold; /* Bold for the author's name */
+    color: #333; /* Dark color for contrast */
+}
+
+.comment-date {
+    font-size: 0.9em; /* Smaller font for the date */
+    color: #888; /* Grey color for the date */
+}
+
+.comment-content {
+    margin-top: 5px; /* Space between author/date and content */
+    color: #444; /* Slightly darker text for content */
+}
+
+/* Container for action buttons */
+.comment-actions {
+    display: flex;
+    gap: 10px; /* Adds 10px of space between the buttons */
+    margin-top: 10px; /* Adds spacing above the buttons */
+}
+
+/* Style for the "Show Replies" and "Hide Replies" buttons */
+.toggle-replies-btn {
+    background: none;
+    border: none;
+    color: #007bff; /* Bootstrap primary color */
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.9em;
+    text-decoration: underline;
+}
+
+.toggle-replies-btn:hover {
+    color: #0056b3; /* Darker blue on hover */
+}
+
+/* Style for the "Reply" button */
+.reply-btn {
+    background: none;
+    border: none;
+    color: #28a745; /* Bootstrap success color */
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.9em;
+    text-decoration: underline;
+}
+
+.reply-btn:hover {
+    color: #1e7e34; /* Darker green on hover */
+}
+
+/* Style for the replies container */
+.replies {
+    margin-left: 20px; /* Indent replies */
+    border-left: 2px dashed #ccc; /* Dashed border for replies */
+    padding-left: 10px; /* Padding for the replies */
+}
+
+/* Style for the reply input box */
+.comment-input {
+    margin-top: 10px;
+}
+
+.comment-input form {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-input textarea {
+    resize: vertical;
+    padding: 8px;
+    font-size: 0.9em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.comment-input button {
+    align-self: flex-start;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.comment-input button[type="submit"] {
+    background-color: #28a745; /* Bootstrap success color */
+    color: white;
+}
+
+.comment-input button[type="submit"]:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.comment-input button[type="button"] {
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: white;
+}
+
+.comment-input button[type="button"]:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
