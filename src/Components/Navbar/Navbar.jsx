@@ -62,7 +62,7 @@ export const Navbar = () => {
     <ul className='navbar-items'>
 
       <li>
-        <button onClick={() => navigate('/create-post')}>New Post</button>
+        <button id={'create-post-button'} onClick={() => navigate('/create-post')}>New Post</button>
       </li>
 
       {/* Account Section */}
