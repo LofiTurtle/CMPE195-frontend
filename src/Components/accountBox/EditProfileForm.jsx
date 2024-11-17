@@ -9,7 +9,7 @@ import api from "../../Services/api.js";
 const EditProfileForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { username, email, status, error } = useSelector((state) => state.user);
+  const { username, userId, email, status, error } = useSelector((state) => state.user);
 
   const [newUsername, setNewUsername] = useState(username || '');
   const [newBio, setNewBio] = useState(email || '');
@@ -25,6 +25,7 @@ const EditProfileForm = () => {
     }
 
     dispatch(updateUserProfile({ newUsername, newBio, image }));
+    navigate(`/users/${userId}`);
   };
 
   return (
