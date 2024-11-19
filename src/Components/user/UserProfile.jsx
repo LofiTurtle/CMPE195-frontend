@@ -1,3 +1,4 @@
+// UserProfile.jsx
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -14,17 +15,26 @@ const UserProfile = () => {
   const [showDiscordDisconnectButton, setShowDiscordDisconnectButton] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const isOwnProfile = currentUserId === Number(userId);
+  const email = user?.profile.email;
 
   useEffect(() => {
     const getUser = async () => {
-      const { user } = await api.getUser(userId);
-      setUser(user);
+      try {
+        const { user } = await api.getUser(userId);
+        setUser(user);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getUser();
 
     const getIsFollowing = async () => {
-      const { following } = await api.getRelationship(userId);
-      setIsFollowing(following);
+      try {
+        const { following } = await api.getRelationship(userId);
+        setIsFollowing(following);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getIsFollowing();
   }, [userId, currentUserId]);
@@ -59,18 +69,20 @@ const UserProfile = () => {
   };
 
   const toggleFollowing = async () => {
-    if (isFollowing) {
-      await api.unfollowUser(userId);
-      setIsFollowing(false);
-      setUser({ ...user, follower_count: user.follower_count - 1 });
-    } else {
-      await api.followUser(userId);
-      setIsFollowing(true);
-      setUser({ ...user, follower_count: user.follower_count + 1 });
+    try {
+      if (isFollowing) {
+        await api.unfollowUser(userId);
+        setIsFollowing(false);
+        setUser({ ...user, follower_count: user.follower_count - 1 });
+      } else {
+        await api.followUser(userId);
+        setIsFollowing(true);
+        setUser({ ...user, follower_count: user.follower_count + 1 });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
-
-
 
   if (!user) {
     return <h1>Loading user...</h1>;
@@ -95,7 +107,8 @@ const UserProfile = () => {
         {user.following_count} following
       </p>
       <h2>Bio:</h2>
-      <p>{user.profile.bio}</p>
+      <p>{user.profile.bio}</p> 
+      <p>Email: {user.profile.email}</p>
       <br />
       {user.connected_accounts.map((account, index) => (
         <div key={index} style={{ border: '1px solid black', padding: '10px' }}>
@@ -105,7 +118,7 @@ const UserProfile = () => {
         </div>
       ))}
       <br />
-      {showDiscordLinkButton && <a href="/api/discord/connect">Link your discord account</a>}
+      {showDiscordLinkButton && <a href="/api/discord/connect">Link your Discord account</a>}
       {showDiscordDisconnectButton && (
         <button onClick={handleDiscordDisconnect}>Disconnect Discord Account</button>
       )}

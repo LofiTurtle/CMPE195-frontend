@@ -38,10 +38,11 @@ const api = {
     return response.data;
   },
 
-  updateUserProfile: async (username, bio, profile_picture) => {
+  updateUserProfile: async (username, bio, email, profile_picture) => {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('bio', bio);
+    formData.append('email', email);
     if (profile_picture) {
       formData.append('profile_picture', profile_picture);
     }

@@ -9,22 +9,23 @@ import api from "../../Services/api.js";
 const EditProfileForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { username, userId, email, status, error } = useSelector((state) => state.user);
+  const { username, userId, status, error } = useSelector((state) => state.user);
 
   const [newUsername, setNewUsername] = useState(username || '');
-  const [newBio, setNewBio] = useState(email || '');
+  const [newEmail, setNewEmail] = useState(null);
+  const [newBio, setNewBio] = useState(null);
   const [image, setImage] = useState(null);
   const [formError, setFormError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!newUsername.trim() || !newBio.trim()) {
+    if (!newUsername.trim() || !newEmail.trim()) {
       setFormError('Username and Email are required.');
       return;
     }
 
-    dispatch(updateUserProfile({ newUsername, newBio, image }));
+    dispatch(updateUserProfile({ newUsername, newBio, newEmail, image }));
     navigate(`/users/${userId}`);
   };
 
@@ -44,7 +45,7 @@ const EditProfileForm = () => {
           />
         </div>
 
-        {/* Email Field */}
+        {/* bio Field */}
         <div className="form-group">
           <label htmlFor="bio">Bio:</label>
           <input
@@ -52,6 +53,18 @@ const EditProfileForm = () => {
             id="bio"
             value={newBio}
             onChange={(e) => setNewBio(e.target.value)}
+            required
+          />
+        </div>
+
+        {/* Email Field */}
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={newEmail}
+            onChange={(e) => setNewEmail(e.target.value)}
             required
           />
         </div>
