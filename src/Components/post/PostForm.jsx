@@ -29,7 +29,7 @@ const PostForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     await api.createPost(title, content, community.id, image);
     navigate(`/community/${community.id}`)
   };
@@ -41,7 +41,7 @@ const PostForm = () => {
         <div>
           <h2>{communityLabel}</h2>
           <br />
-          <ul>
+          <ul id={'community-list'}>
             {followedCommunities.map((community) => (
               <li
                 key={community.id}
