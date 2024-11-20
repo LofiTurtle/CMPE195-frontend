@@ -176,6 +176,7 @@ describe('basic user flows', () => {
     cy.get('#username').clear()
     cy.get('#username').type(username + '_edited')
     cy.get('#bio').type(newBio)
+    cy.get('#password').type('password1')
     cy.get('button[type=submit]').click()
     cy.url().should('include', '/users/1')
     cy.contains('h1', username + '_edited')
