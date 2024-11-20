@@ -173,6 +173,7 @@ describe('basic user flows', () => {
 
     cy.visit('/users/1')
     cy.contains('button', 'Edit Profile').click()
+    cy.get('#username').clear()
     cy.get('#username').type(username + '_edited')
     cy.get('#bio').type(newBio)
     cy.get('button[type=submit]').click()
