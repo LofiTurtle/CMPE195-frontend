@@ -25,7 +25,7 @@ const EditProfileForm = () => {
       return;
     }
 
-    dispatch(updateUserProfile({ newUsername, newBio, newPassword, image }));
+    await dispatch(updateUserProfile({ newUsername, newBio, newPassword, image }));
     navigate(`/users/${userId}`);
   };
 
