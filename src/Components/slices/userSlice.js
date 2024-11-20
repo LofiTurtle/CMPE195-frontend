@@ -15,9 +15,9 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
 // Thunk to update the user profile
 export const updateUserProfile = createAsyncThunk(
   'user/updateUserProfile',
-  async ({ newUsername, newBio, image }, { rejectWithValue }) => {
+  async ({ newUsername, newBio, newPassword, image }, { rejectWithValue }) => {
     try {
-      return await api.updateUserProfile(newUsername, newBio, image);
+      return await api.updateUserProfile(newUsername, newBio, newPassword, image);
     } catch (error) {
       return rejectWithValue(error.response.data.error || 'Failed to update user profile');
     }
