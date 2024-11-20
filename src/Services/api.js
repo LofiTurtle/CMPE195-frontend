@@ -38,11 +38,11 @@ const api = {
     return response.data;
   },
 
-  updateUserProfile: async (username, bio, email, profile_picture) => {
+  updateUserProfile: async (username, bio, password, profile_picture) => {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('bio', bio);
-    formData.append('email', email);
+    formData.append('password', password);
     if (profile_picture) {
       formData.append('profile_picture', profile_picture);
     }
@@ -54,6 +54,8 @@ const api = {
     const response = await axiosApi.get(`/users/${userId}`);
     return response.data;
   },
+
+  
 
   getUserPosts: async (userId, sortType) => {
     const response = await axiosApi.get(`/users/${userId}/posts`, {params: {

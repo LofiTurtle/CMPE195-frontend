@@ -12,20 +12,20 @@ const EditProfileForm = () => {
   const { username, userId, status, error } = useSelector((state) => state.user);
 
   const [newUsername, setNewUsername] = useState(username || '');
-  const [newEmail, setNewEmail] = useState(null);
-  const [newBio, setNewBio] = useState(null);
+  const [newPassword, setNewPassword] = useState('');
+  const [newBio, setNewBio] = useState('');
   const [image, setImage] = useState(null);
   const [formError, setFormError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!newUsername.trim() || !newEmail.trim()) {
-      setFormError('Username and Email are required.');
+    if (!newUsername.trim() || !newPassword.trim()) {
+      setFormError('Username and Password are required.');
       return;
     }
 
-    dispatch(updateUserProfile({ newUsername, newBio, newEmail, image }));
+    dispatch(updateUserProfile({ newUsername, newBio, newPassword, image }));
     navigate(`/users/${userId}`);
   };
 
@@ -45,7 +45,7 @@ const EditProfileForm = () => {
           />
         </div>
 
-        {/* bio Field */}
+        {/* Bio Field */}
         <div className="form-group">
           <label htmlFor="bio">Bio:</label>
           <input
@@ -57,14 +57,14 @@ const EditProfileForm = () => {
           />
         </div>
 
-        {/* Email Field */}
+        {/* Password Field */}
         <div className="form-group">
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="password">Password:</label>
           <input
-            type="email"
-            id="email"
-            value={newEmail}
-            onChange={(e) => setNewEmail(e.target.value)}
+            type="password"
+            id="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
             required
           />
         </div>
