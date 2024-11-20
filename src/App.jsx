@@ -12,10 +12,8 @@ import GameSearch from './Components/post/GameSearch';
 import CreateCommunity from './Components/post/CreateCommunity';
 import CommunityMemberList from './Components/post/CommunityMemberList';
 
-import TestFollowing from './Components/tests/TestFollowing';
 import UserFollowerList from './Components/user/UserFollowerList';
 import UserFollowingList from './Components/user/UserFollowingList';
-import TestSearch from './Components/tests/TestSearch';
 import NavbarWrapper from "./Components/Navbar/NavbarWrapper.jsx";
 import EditProfileForm from './Components/accountBox/EditProfileForm.jsx';
 import CommunityCardList from "./Components/post/CommunityCardList.jsx";
@@ -35,8 +33,6 @@ function App() {
   return (
 
       <Router>
- 
-
         <Routes>
           <Route path="/login" element={<AppContainer><AccountBox/></AppContainer>}/>
 
@@ -55,9 +51,6 @@ function App() {
             <Route path="/create-community/:gameId" element={<CreateCommunity />} />
             <Route path="/community" element={<CommunityCardList />} />
             <Route path="/users" element={<AllUserCardList />} />
-
-            <Route path='/tests/search' element={<TestSearch />} />
-            <Route path='/tests/following' element={<TestFollowing />} />
           </Route>
         </Routes>
       </Router>

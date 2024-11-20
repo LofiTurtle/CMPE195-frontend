@@ -1,10 +1,13 @@
 import { defineConfig } from "cypress";
+import coverage from '@cypress/code-coverage/task.js'
 
 export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:5173',
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      coverage(on, config)
+
+      return config
     },
   },
 
@@ -14,4 +17,10 @@ export default defineConfig({
       bundler: 'vite',
     },
   },
+
+  env: {
+    codeCoverage: {
+      exclude: ['cypress/**/*.*', '**/*.test.*', '**/*.spec.*'],
+    }
+  }
 });
