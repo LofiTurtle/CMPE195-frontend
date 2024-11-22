@@ -1,23 +1,29 @@
 // UserProfile.jsx
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { hasDiscordAccount, getCurrentUserId } from '../../utils';
+import {useDispatch, useSelector} from 'react-redux';
+import { hasDiscordAccount } from '../../utils';
 import api from '../../Services/api';
 import PostList from '../post/PostList';
+import {fetchUser} from "../slices/userSlice.js";
 
 const UserProfile = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const { userId: currentUserId, username } = useSelector((state) => state.user);
+  const { currentUser, status, error } = useSelector((state) => state.user);
   const [user, setUser] = useState(null);
   const [showDiscordLinkButton, setShowDiscordLinkButton] = useState(false);
   const [showDiscordDisconnectButton, setShowDiscordDisconnectButton] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-  const isOwnProfile = currentUserId === Number(userId);
-  const email = user?.profile.email;
+  const isOwnProfile = currentUser?.id === Number(userId);
+  
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchUser());
+    }
+
     const getUser = async () => {
       try {
         const { user } = await api.getUser(userId);
@@ -37,24 +43,22 @@ const UserProfile = () => {
       }
     };
     getIsFollowing();
-  }, [userId, currentUserId]);
+  }, [dispatch, userId]);
 
   useEffect(() => {
     const checkDiscordLinkButton = async () => {
-      const currentId = await getCurrentUserId();
-      setShowDiscordLinkButton((user?.id === currentId || false) && !hasDiscordAccount(user));
+      setShowDiscordLinkButton((user?.id === currentUser?.id || false) && !hasDiscordAccount(user));
     };
 
     const checkDiscordDisconnectButton = async () => {
-      const currentId = await getCurrentUserId();
-      setShowDiscordDisconnectButton((user?.id === currentId || false) && hasDiscordAccount(user));
+      setShowDiscordDisconnectButton((user?.id === currentUser?.id || false) && hasDiscordAccount(user));
     };
 
     if (user) {
       checkDiscordLinkButton();
       checkDiscordDisconnectButton();
     }
-  }, [user]);
+  }, [currentUser?.id, user]);
 
   const handleDiscordDisconnect = () => {
     fetch('/api/discord/disconnect', { method: 'POST' })
@@ -107,8 +111,7 @@ const UserProfile = () => {
         {user.following_count} following
       </p>
       <h2>Bio:</h2>
-      <p>{user.profile.bio}</p> 
-      <p>Email: {user.profile.email}</p>
+      <p>{user.profile.bio}</p>
       <br />
       {user.connected_accounts.map((account, index) => (
         <div key={index} style={{ border: '1px solid black', padding: '10px' }}>

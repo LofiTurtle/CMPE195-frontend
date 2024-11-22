@@ -2,14 +2,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 
-
 import "./Navbar.css";
 import SearchBox from './SearchBox';
 import {fetchUser} from "../slices/userSlice.js";
 
 export const Navbar = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
-  const {userId} = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
 
   const navigate = useNavigate(); // To navigate after logout
   const dispatch = useDispatch();
@@ -66,7 +65,7 @@ export const Navbar = () => {
       </li>
 
       {/* Account Section */}
-      <li>
+      {currentUser && (<li>
         <div className='menu-container' ref={accountMenuRef}>
           <div
             className='menu-trigger'
@@ -75,16 +74,16 @@ export const Navbar = () => {
               setAccountMenuOpen(!accountMenuOpen);
             }}
           >
-            <img src={`/api/users/${userId}/profile-picture`} alt="" className={'w-9'}/>
+            <img src={`/api/users/${currentUser.id}/profile-picture`} alt="" className={'w-9'}/>
           </div>
           <div className={`dropdown-menu ${accountMenuOpen ? 'active' : 'inactive'}`}>
-            <ul>
-              <DropdownItem text={"My Profile"} to={`/users/${userId}`}/>
+            <ul onClick={() => setAccountMenuOpen(false)}>
+              <DropdownItem text={"My Profile"} to={`/users/${currentUser.id}`}/>
               <DropdownItem text={"Logout"} onClick={logout}/>
             </ul>
           </div>
         </div>
-      </li>
+      </li>)}
     </ul>
   </nav>);
 };

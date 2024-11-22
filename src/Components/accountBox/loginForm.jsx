@@ -11,7 +11,7 @@ import {
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
 import { useDispatch } from 'react-redux';
-import { setUsernameInput } from '../slices/userSlice'; // Adjust the path if necessary
+import { fetchUser } from "../slices/userSlice.js";
 
 export function LoginForm(props) {
   const { switchToSignup } = useContext(AccountContext);
@@ -33,8 +33,7 @@ export function LoginForm(props) {
             throw new Error('Failed to login');
         }
 
-        await response.json();
-        dispatch(setUsernameInput(username)); // Dispatch the setUsername action
+        await dispatch(fetchUser());
         navigate('/dashboard');
     } catch (error) {
         console.log('failed login fetch:', error.message);
