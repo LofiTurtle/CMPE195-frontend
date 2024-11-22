@@ -12,8 +12,6 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const { currentUser, status, error } = useSelector((state) => state.user);
   const [user, setUser] = useState(null);
-  const [showDiscordLinkButton, setShowDiscordLinkButton] = useState(false);
-  const [showDiscordDisconnectButton, setShowDiscordDisconnectButton] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const isOwnProfile = currentUser?.id === Number(userId);
   
@@ -43,22 +41,7 @@ const UserProfile = () => {
       }
     };
     getIsFollowing();
-  }, [dispatch, userId]);
-
-  useEffect(() => {
-    const checkDiscordLinkButton = async () => {
-      setShowDiscordLinkButton((user?.id === currentUser?.id || false) && !hasDiscordAccount(user));
-    };
-
-    const checkDiscordDisconnectButton = async () => {
-      setShowDiscordDisconnectButton((user?.id === currentUser?.id || false) && hasDiscordAccount(user));
-    };
-
-    if (user) {
-      checkDiscordLinkButton();
-      checkDiscordDisconnectButton();
-    }
-  }, [currentUser?.id, user]);
+  }, [dispatch, status, userId]);
 
   const handleDiscordDisconnect = () => {
     fetch('/api/discord/disconnect', { method: 'POST' })
@@ -99,36 +82,39 @@ const UserProfile = () => {
         <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
       ) : (
         <div>
-          <br />
+          <br/>
           <button onClick={toggleFollowing}>{isFollowing ? 'Unfollow' : 'Follow'} user</button>
-          <br />
+          <br/>
         </div>
       )}
-      <p onClick={() => navigate(`/users/${userId}/followers`)} style={{ cursor: 'pointer' }}>
+      <p onClick={() => navigate(`/users/${userId}/followers`)} style={{cursor: 'pointer'}}>
         {user.follower_count} followers
       </p>
-      <p onClick={() => navigate(`/users/${userId}/following`)} style={{ cursor: 'pointer' }}>
+      <p onClick={() => navigate(`/users/${userId}/following`)} style={{cursor: 'pointer'}}>
         {user.following_count} following
       </p>
       <h2>Bio:</h2>
       <p>{user.profile.bio}</p>
-      <br />
-      {user.connected_accounts.map((account, index) => (
-        <div key={index} style={{ border: '1px solid black', padding: '10px' }}>
-          <img src={account.profile_picture_url} alt="" />
-          <p>Platform: {account.provider}</p>
-          <p>Account Username: {account.username}</p>
+      <br/>
+      {!currentUser.connected_accounts?.discord && <a href="/api/discord/connect">Link your Discord account</a>}
+      {currentUser.connected_accounts?.discord && (
+        <div>
+          <div style={{border: '1px solid black', padding: '10px', cursor: 'pointer'}}
+               onClick={() => location.href = `https://discordapp.com/users/${currentUser.connected_accounts.discord.discord_user_id}`}>
+            <img src={currentUser.connected_accounts.discord.profile_picture_url} alt=""/>
+            <p>Platform: {currentUser.connected_accounts.discord.provider}</p>
+            <p>Account Username: {currentUser.connected_accounts.discord.username}</p>
+          </div>
+          <br/>
+          <button onClick={handleDiscordDisconnect}>Disconnect Discord Account</button>
         </div>
-      ))}
-      <br />
-      {showDiscordLinkButton && <a href="/api/discord/connect">Link your Discord account</a>}
-      {showDiscordDisconnectButton && (
-        <button onClick={handleDiscordDisconnect}>Disconnect Discord Account</button>
-      )}
-      <br />
-      <PostList userId={userId} />
+      )
+    }
+      <br/>
+      <PostList userId={userId}/>
     </div>
-  );
+    )
+  ;
 };
 
 export default UserProfile;
