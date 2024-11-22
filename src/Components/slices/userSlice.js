@@ -17,7 +17,8 @@ export const updateUserProfile = createAsyncThunk(
   'user/updateUserProfile',
   async ({ newUsername, newBio, newPassword, image }, { rejectWithValue }) => {
     try {
-      return await api.updateUserProfile(newUsername, newBio, newPassword, image);
+      const data = await api.updateUserProfile(newUsername, newBio, newPassword, image);
+      return data.user;
     } catch (error) {
       return rejectWithValue(error.response.data.error || 'Failed to update user profile');
     }
@@ -27,19 +28,11 @@ export const updateUserProfile = createAsyncThunk(
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    userId: null,
-    username: null,
-    email: null,
+    currentUser: null,
     status: 'idle',
-    error: null,
+    error: null
   },
   reducers: {
-    setUsernameInput: (state, action) => {
-      state.username = action.payload;
-    },
-    clearUsername: (state) => {
-      state.username = null;
-    },
     resetStatus: (state) => {
       state.status = 'idle';
       state.error = null;
@@ -53,9 +46,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.userId = action.payload.id;
-        state.username = action.payload.username;
-        state.email = action.payload.email;
+        state.currentUser = action.payload
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.status = 'failed';
@@ -69,8 +60,7 @@ const userSlice = createSlice({
       })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.username = action.payload.username;
-        state.email = action.payload.email;
+        state.currentUser = action.payload;
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
         state.status = 'failed';

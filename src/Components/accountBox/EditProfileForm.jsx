@@ -1,19 +1,18 @@
 // src/Components/accountBox/EditProfileForm.jsx
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserProfile, resetStatus } from '../slices/userSlice';
+import { updateUserProfile } from '../slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 import './EditProfileForm.css';
-import api from "../../Services/api.js";
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { username, userId, status, error } = useSelector((state) => state.user);
+  const { currentUser, status, error } = useSelector((state) => state.user);
 
-  const [newUsername, setNewUsername] = useState(username || '');
+  const [newUsername, setNewUsername] = useState(currentUser.username || '');
   const [newPassword, setNewPassword] = useState('');
-  const [newBio, setNewBio] = useState('');
+  const [newBio, setNewBio] = useState(currentUser.profile.bio);
   const [image, setImage] = useState(null);
   const [formError, setFormError] = useState('');
 
@@ -26,7 +25,7 @@ const EditProfileForm = () => {
     }
 
     await dispatch(updateUserProfile({ newUsername, newBio, newPassword, image }));
-    navigate(`/users/${userId}`);
+    navigate(`/users/${currentUser.id}`);
   };
 
   return (

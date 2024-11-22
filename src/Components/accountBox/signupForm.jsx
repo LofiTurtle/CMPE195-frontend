@@ -10,7 +10,7 @@ import {
 } from "./common";
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
-import { setUsernameInput } from '../slices/userSlice'; // Adjust the path if necessary
+import  {fetchUser } from '../slices/userSlice';
 import { useDispatch } from 'react-redux';
 
 export function SignupForm(props) {
@@ -50,7 +50,7 @@ export function SignupForm(props) {
         throw new Error('Failed to register');
       }
   
-      dispatch(setUsernameInput(userName)); // Dispatch the setUsername action
+      await dispatch(fetchUser());
       navigate('/dashboard');
     } catch (error) {
       console.log('Failed to register:', error);

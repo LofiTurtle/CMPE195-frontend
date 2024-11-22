@@ -3,13 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import './Post.css'
 import CommentList from './CommentList';
 import api from '../../Services/api';
-import { useSelector } from 'react-redux';
 
 function Post() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
-  const username = useSelector((state) => state.user.username); // Select username from Redux state
-
 
   useEffect(() => {
     const getPost = async () => {
