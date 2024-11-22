@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import { hasDiscordAccount } from '../../utils';
 import api from '../../Services/api';
 import PostList from '../post/PostList';
 import {fetchUser} from "../slices/userSlice.js";
