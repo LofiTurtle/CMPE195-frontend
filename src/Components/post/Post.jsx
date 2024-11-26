@@ -3,10 +3,13 @@ import { useParams, Link } from 'react-router-dom';
 import './Post.css'
 import CommentList from './CommentList';
 import api from '../../Services/api';
+import {useDispatch, useSelector} from 'react-redux';
+
 
 function Post() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
+  const { currentUser, status, error } = useSelector((state) => state.user);
 
   useEffect(() => {
     const getPost = async () => {
@@ -35,11 +38,18 @@ function Post() {
             {post.author.username}
           </Link>
         </span>
+        {currentUser && currentUser.id === post.author.id && (
+          <div className="dropdown">
+            <button className="dropdown-button">...</button>
+            <div className="dropdown-content">
+              <Link to={`/posts/${postId}/edit`}>Edit</Link>
+            </div>
+          </div>
+        )}
         <p>{post.content}</p>
         <CommentList postId={postId}/>
       </div>
     </div>
-
   );
 }
 
