@@ -17,7 +17,7 @@ import NavbarWrapper from "./Components/Navbar/NavbarWrapper.jsx";
 import EditProfileForm from './Components/accountBox/EditProfileForm.jsx';
 import CommunityCardList from "./Components/post/CommunityCardList.jsx";
 import AllUserCardList from "./Components/user/AllUserCardList.jsx";
-// import Sidebar from './Components/Navbar/sidebar.jsx'; 
+
 
 const AppContainer = styled.div`
   width: 100%;
