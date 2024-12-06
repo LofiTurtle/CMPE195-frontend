@@ -97,6 +97,8 @@ const UserProfile = () => {
       <p>{user.profile.bio}</p>
       <br/>
       <RatingSummary />
+      {currentUser.id !== Number(userId) && (<Link to={`/users/${userId}/ratings/submit`}>Rate this user</Link>)}
+      <br/>
       <br/>
       {currentUser?.id === Number(userId) && (<div>
         {!currentUser.connected_accounts?.discord && <a href="/api/discord/connect">Link your Discord account</a>}
