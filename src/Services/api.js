@@ -210,6 +210,52 @@ const api = {
   gameInfo: async (gameId) => {
     const response = await axiosApi.get(`/game-info/${gameId}`);
     return response.data;
+  },
+
+  getRatingFields: async () => {
+    const response = await axiosApi.get(`/ratings/fields`);
+    return response.data;
+  },
+
+  getRatingsByUser: async (userId) => {
+    const response = await axiosApi.get('/ratings', { params: {
+      giver: userId
+    }});
+    return response.data;
+  },
+
+  getRatingsForUser: async (userId) => {
+    const response = await axiosApi.get('/ratings', { params: {
+      receiver: userId
+    }});
+    return response.data;
+  },
+
+  getRating: async (giverUserId, receiverUserId) => {
+    const response = await axiosApi.get('/ratings', { params: {
+      giver: giverUserId,
+      receiver: receiverUserId
+    }});
+    return response.data;
+  },
+
+  createRating: async (receiverUserId, description, ratingFields) => {
+    // fields is array of {name: string, value: integer} objects
+    const response = await axiosApi.post(`/ratings/${receiverUserId}`, {
+      description: description,
+      fields: ratingFields
+    });
+    return response.data;
+  },
+
+  deleteRating: async (receiverUserId) => {
+    const response = await axiosApi.delete(`/ratings/${receiverUserId}`);
+    return response.data;
+  },
+
+  getRatingSummary: async (receiverUserId) => {
+    const response = await axiosApi.get(`/ratings/${receiverUserId}/summary`);
+    return response.data;
   }
 };
 

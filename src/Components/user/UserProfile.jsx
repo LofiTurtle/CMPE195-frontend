@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import api from '../../Services/api';
 import PostList from '../post/PostList';
 import {fetchUser} from "../slices/userSlice.js";
+import RatingSummary from "../rating/RatingSummary.jsx";
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -94,6 +95,8 @@ const UserProfile = () => {
       </p>
       <h2>Bio:</h2>
       <p>{user.profile.bio}</p>
+      <br/>
+      <RatingSummary />
       <br/>
       {currentUser?.id === Number(userId) && (<div>
         {!currentUser.connected_accounts?.discord && <a href="/api/discord/connect">Link your Discord account</a>}

@@ -18,6 +18,8 @@ import NavbarWrapper from "./Components/Navbar/NavbarWrapper.jsx";
 import EditProfileForm from './Components/accountBox/EditProfileForm.jsx';
 import CommunityCardList from "./Components/post/CommunityCardList.jsx";
 import AllUserCardList from "./Components/user/AllUserCardList.jsx";
+import RatingForm from "./Components/rating/RatingForm.jsx";
+import RatingList from "./Components/rating/RatingList.jsx";
 
 
 const AppContainer = styled.div`
@@ -46,6 +48,8 @@ function App() {
             <Route path="/users/:userId" element={<UserProfile />}></Route>
             <Route path="/users/:userId/followers" element={<UserFollowerList />}></Route>
             <Route path="/users/:userId/following" element={<UserFollowingList />}></Route>
+            <Route path="/users/:userId/ratings" element={<RatingList />} />
+            <Route path="/users/:userId/ratings/submit" element={<RatingForm />}></Route>
             <Route path="/" element={<Navigate replace to="/login" />} />
             <Route path="/game-search" element={<GameSearch />} />
             <Route path="/create-community/:gameId" element={<CreateCommunity />} />
