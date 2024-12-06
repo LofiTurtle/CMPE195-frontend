@@ -7,17 +7,26 @@ const Rating = () => {
   const { userId } = useParams();
   
   const [summary, setSummary] = useState();
+  const [showNoSummary, setShowNoSummary] = useState(false);
 
   useEffect(() => {
     const getRatingSummary = async () => {
       const { summary: ratingSummary } = await api.getRatingSummary(userId);
-      setSummary(ratingSummary);
+      if (ratingSummary !== null) {
+        setSummary(ratingSummary);
+      } else {
+        setShowNoSummary(true);
+      }
     }
     getRatingSummary();
   }, [userId]);
 
   const caps = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  if (showNoSummary) {
+    return <div>No ratings yet</div>
   }
 
   if (!summary) {
