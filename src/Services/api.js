@@ -248,6 +248,11 @@ const api = {
     return response.data;
   },
 
+  deletePost: async (postId) => {
+    const response = await axiosApi.delete(`/posts/${postId}`);
+    return response.data;
+  },
+
   deleteRating: async (receiverUserId) => {
     const response = await axiosApi.delete(`/ratings/${receiverUserId}`);
     return response.data;

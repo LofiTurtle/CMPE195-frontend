@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import './Post.css'
 import CommentList from './CommentList';
 import api from '../../Services/api';
 import {useDispatch, useSelector} from 'react-redux';
 
-
 function Post() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const { currentUser, status, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
+  const DeletePost = ({ postId }) => {
+    const navigate = useNavigate();
+  
+    const handleDelete = async () => {
+      try {
+        await api.deletePost(postId);
+        navigate('/dashboard');
+      } catch (error) {
+        console.error('Error deleting post:', error);
+      }
+    };
+  
+    return (
+      <button onClick={handleDelete}>Delete Post</button>
+    );
+  };
   useEffect(() => {
     const getPost = async () => {
       const { post } = await api.getPost(postId);
@@ -43,6 +59,7 @@ function Post() {
             <button className="dropdown-button">...</button>
             <div className="dropdown-content">
               <Link to={`/posts/${postId}/edit`}>Edit</Link>
+              <DeletePost postId={postId} />
             </div>
           </div>
         )}
