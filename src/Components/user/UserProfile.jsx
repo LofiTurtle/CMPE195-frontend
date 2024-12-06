@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import api from '../../Services/api';
 import PostList from '../post/PostList';
 import {fetchUser} from "../slices/userSlice.js";
+import RatingSummary from "../rating/RatingSummary.jsx";
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -95,20 +96,23 @@ const UserProfile = () => {
       <h2>Bio:</h2>
       <p>{user.profile.bio}</p>
       <br/>
-      {!currentUser.connected_accounts?.discord && <a href="/api/discord/connect">Link your Discord account</a>}
-      {currentUser.connected_accounts?.discord && (
-        <div>
-          <div style={{border: '1px solid black', padding: '10px', cursor: 'pointer'}}
-               onClick={() => location.href = `https://discordapp.com/users/${currentUser.connected_accounts.discord.discord_user_id}`}>
-            <img src={currentUser.connected_accounts.discord.profile_picture_url} alt=""/>
-            <p>Platform: {currentUser.connected_accounts.discord.provider}</p>
-            <p>Account Username: {currentUser.connected_accounts.discord.username}</p>
+      <RatingSummary />
+      <br/>
+      {currentUser?.id === Number(userId) && (<div>
+        {!currentUser.connected_accounts?.discord && <a href="/api/discord/connect">Link your Discord account</a>}
+        {currentUser.connected_accounts?.discord && (
+          <div>
+            <div style={{border: '1px solid black', padding: '10px', cursor: 'pointer'}}
+                 onClick={() => location.href = `https://discordapp.com/users/${currentUser.connected_accounts.discord.discord_user_id}`}>
+              <img src={currentUser.connected_accounts.discord.profile_picture_url} alt=""/>
+              <p>Platform: {currentUser.connected_accounts.discord.provider}</p>
+              <p>Account Username: {currentUser.connected_accounts.discord.username}</p>
+            </div>
+            <br/>
+            <button onClick={handleDiscordDisconnect}>Disconnect Discord Account</button>
           </div>
-          <br/>
-          <button onClick={handleDiscordDisconnect}>Disconnect Discord Account</button>
-        </div>
-      )
-    }
+        )}
+      </div>)}
       <br/>
       <PostList userId={userId}/>
     </div>
