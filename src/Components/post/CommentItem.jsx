@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import CommentInput from './CommentInput'; // Adjust the path as needed
-import './CommentItem.css'; // Ensure this import points to your CSS file
-import api from '../../Services/api'; // Adjust the path as needed
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import CommentInput from './CommentInput';
+import './CommentItem.css';
+import api from '../../Services/api';
+import {useSelector} from 'react-redux';
 
 
 const CommentItem = ({ comment, onReplySubmit }) => {

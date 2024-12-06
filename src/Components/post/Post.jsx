@@ -9,8 +9,7 @@ function Post() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const { currentUser, status, error } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-
+  useDispatch();
   const DeletePost = ({ postId }) => {
     const navigate = useNavigate();
   
@@ -59,7 +58,7 @@ function Post() {
           <div className="dropdown">
             <button className="dropdown-button">Edit</button>
             <div className="dropdown-content">
-              <Link to={`/posts/${postId}/edit`}>Edit</Link>
+              {/*<Link to={`/posts/${postId}/edit`}>Edit</Link>*/}
               <DeletePost postId={postId} />
             </div>
           </div>
