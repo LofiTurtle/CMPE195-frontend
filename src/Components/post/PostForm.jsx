@@ -66,7 +66,7 @@ const PostForm = () => {
             className={`post-type ${activeTab === 'media' ? 'active' : ''}`}
             onClick={() => setActiveTab('media')}
           >
-            Images & Video
+            Add Images 
           </div>
         </div>
 
