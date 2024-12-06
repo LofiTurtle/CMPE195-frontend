@@ -41,7 +41,7 @@ const Rating = () => {
           <span>{field.value}</span>
         </div>
       ))}
-      <p>{summary.count} ratings</p>
+      <p>{summary.count} rating{summary.count === 1 ? '' : 's'}</p>
     </div>
   )
 }
