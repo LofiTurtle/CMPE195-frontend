@@ -27,6 +27,7 @@ function Post() {
       <button onClick={handleDelete}>Delete Post</button>
     );
   };
+  
   useEffect(() => {
     const getPost = async () => {
       const { post } = await api.getPost(postId);
@@ -56,7 +57,7 @@ function Post() {
         </span>
         {currentUser && currentUser.id === post.author.id && (
           <div className="dropdown">
-            <button className="dropdown-button">...</button>
+            <button className="dropdown-button">Edit</button>
             <div className="dropdown-content">
               <Link to={`/posts/${postId}/edit`}>Edit</Link>
               <DeletePost postId={postId} />

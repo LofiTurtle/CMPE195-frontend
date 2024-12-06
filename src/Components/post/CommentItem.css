@@ -7,6 +7,27 @@
     border-radius: 5px; /* Rounded corners */
 }
 
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between username and delete button */
+}
+
+.delete-comment-btn {
+    background: none;
+    border: none;
+    color: #dc3545; /* Bootstrap danger color */
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.8em; /* Smaller font size */
+    text-decoration: underline;
+}
+
+.delete-comment-btn:hover {
+    color: #c82333;
+}
+
+
 .comment-author {
     font-weight: bold; /* Bold for the author's name */
     color: #333; /* Dark color for contrast */

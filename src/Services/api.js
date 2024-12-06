@@ -142,6 +142,7 @@ const api = {
     await axiosApi.delete(`/users/${userId}/follow`);
   },
 
+
   getRelationship: async (userId) => {
     // Return the follower/following relationship between the current user and userId
     // Response format: {following: boolean, followed_by: boolean}
@@ -255,6 +256,11 @@ const api = {
 
   deleteRating: async (receiverUserId) => {
     const response = await axiosApi.delete(`/ratings/${receiverUserId}`);
+    return response.data;
+  },
+
+  deleteComment: async (commentId) => {
+    const response = await axiosApi.delete(`/comments/${commentId}`);
     return response.data;
   },
 
