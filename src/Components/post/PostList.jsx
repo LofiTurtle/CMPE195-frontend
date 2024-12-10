@@ -84,20 +84,23 @@ function PostList({ homepage, userId, communityId }) {
       </div>
       {posts.map(post => (
         <div className="post" key={post.id}>
+          <Link to={`/posts/${post.id}`}>
+            <h3 className="post-title">{post.title}</h3>
+          </Link>
           {post.media === 'image' ? <img
             className="post-image"
             src={`/api/posts/${post.id}/image`}
             alt={post.title}
             onError={(e) => { e.target.style.display = 'none'; }}
           /> : null}
-          <Link to={`/posts/${post.id}`}>
-            <h3>{post.title}</h3>
-          </Link>
           <Link to={`/users/${post.author.id}`}>
             <p>{post.author.username}</p>
           </Link>
           <p className="post-content">
             {post.content.substring(0, 100)} {post.content.length > 100 ? '...' : ''}
+          </p>
+          <p className="post-date">
+            Posted {(new Date(`${post.created_at}Z`)).toLocaleString()}
           </p>
 
           <div className="post-actions">
@@ -105,19 +108,7 @@ function PostList({ homepage, userId, communityId }) {
               <AiFillLike size="40" color="var(--secondary-bg)" />
               ({post.num_likes})
             </button>
-
-            <div className="comment-section">
-              <textarea
-                placeholder="Add a comment..."
-                value={comment[post.id] || ''}
-                onChange={(e) => handleCommentChange(e, post.id)}
-              />
-              <button onClick={() => handleCommentSubmit(post.id)}>
-                Submit Comment
-              </button>
-            </div>
           </div>
-          <hr />
         </div>
       ))}
     </div>

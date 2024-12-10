@@ -9,8 +9,12 @@
     border: 1px solid var(--border-color);
     border-radius: 5px;
     padding: 10px;
-    margin-bottom: 10px;
+    margin: 10px;
     color: var(--primary-text-color);
+  }
+
+  .post-title {
+    font-size: 1.2rem;
   }
 
   .post-image {
@@ -19,10 +23,14 @@
     margin-bottom: 15px;
   }
 
+  .post-date {
+    color: #7f7f7f !important;
+    font-size: 0.9rem;
+  }
+
   .post:hover{
     background-color: #f9f9f9; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-  transform: translateY(-5px); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   

@@ -193,24 +193,6 @@ nav ul li {
   gap: 0.5rem;
 }
 
-.posts-container {
-  width: 100%;
-  max-width: 800px; /* or whatever max-width you prefer */
-  margin: 0 auto;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-/* Individual post styling */
-.post {
-  width: 100%;
-  margin-bottom: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  overflow: hidden; /* Ensures content stays within bounds */
-}
-
 /* Media Queries */
 @media (max-width: 768px) {
   nav .search-bar {
