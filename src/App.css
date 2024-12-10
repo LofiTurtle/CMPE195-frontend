@@ -1,10 +1,20 @@
-#root {
-  max-width: auto;
-  margin: 0 auto;
-  text-align: left;
-  
+/* Add to your global CSS file */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f2f5;
+}
+
+:root {
+  --secondary-bg: #8BA860;
+  --primary-text-color: #fff;
+}
 .logo {
   height: 6em;
   padding: 1.5em;

@@ -114,32 +114,7 @@ const SearchBox = () => {
   return (
     <div className="w-full max-w-md relative" ref={searchBoxRef}>
       <div className="flex gap-2">
-        {/* Search Type Dropdown */}
-        <div className="relative" ref={dropdownRef}>
-          <button
-            onClick={() => setShowDropdown(!showDropdown)}
-            className="px-3 py-2 border rounded bg-white w-40"
-          >
-            {selectedType.label} ▼
-          </button>
-
-          {showDropdown && (
-            <div className="absolute mt-1 w-full bg-white border rounded shadow z-50">
-              {searchTypes.map(type => (
-                <button
-                  key={type.id}
-                  onClick={() => {
-                    setSelectedType(type);
-                    setShowDropdown(false);
-                  }}
-                  className="w-full px-3 py-2 text-left hover:bg-gray-100"
-                >
-                  {type.label}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+       
 
         {/* Search Input */}
         <input
@@ -150,15 +125,7 @@ const SearchBox = () => {
           className="flex-1 px-3 py-2 border rounded"
         />
 
-        {/*  "View all" button */}
-        {selectedType !== searchTypes[2] && (
-          <button
-            onClick={handleViewAll}
-            className="px-3 py-2 border rounded bg-white"
-          >
-            View all
-          </button>
-        )}
+       
       </div>
 
       {/* Loading Indicator */}

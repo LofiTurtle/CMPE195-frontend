@@ -30,35 +30,61 @@ const AppContainer = styled.div`
   justify-content: center;
 `;
 
+// New styled component for the layout
+const MainLayout = styled.div`
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  
+`;
+
+const ContentArea = styled.div`
+  flex: 1;
+  
+  @media (max-width: 768px) {
+    margin-left: 200px;
+  }
+`;
+
 function App() {
-
   return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={
+          <AppContainer>
+            <AccountBox/>
+          </AppContainer>
+        }/>
 
-      <Router>
-        <Routes>
-          <Route path="/login" element={<AppContainer><AccountBox/></AppContainer>}/>
-
-          <Route element={<NavbarWrapper />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/posts/:postId" element={<Post />} />
-            <Route path="/community/:communityId" element={<Community />}></Route>
-            <Route path="/community/:communityId/members" element={<CommunityMemberList />}></Route>
-            <Route path="/create-post" element={<PostForm />}></Route>
-            <Route path="/edit-profile" element={<EditProfileForm />}></Route>
-            <Route path="/users/:userId" element={<UserProfile />}></Route>
-            <Route path="/users/:userId/followers" element={<UserFollowerList />}></Route>
-            <Route path="/users/:userId/following" element={<UserFollowingList />}></Route>
-            <Route path="/users/:userId/ratings" element={<RatingList />} />
-            <Route path="/users/:userId/ratings/submit" element={<RatingForm />}></Route>
-            <Route path="/" element={<Navigate replace to="/login" />} />
-            <Route path="/game-search" element={<GameSearch />} />
-            <Route path="/create-community/:gameId" element={<CreateCommunity />} />
-            <Route path="/community" element={<CommunityCardList />} />
-            <Route path="/users" element={<AllUserCardList />} />
-          </Route>
-        </Routes>
-      </Router>
-  )
+        {/* Wrap protected routes with MainLayout */}
+        <Route element={
+          <MainLayout>
+            {/*<Sidebar /> */}
+            <ContentArea>
+              <NavbarWrapper />
+            </ContentArea>
+          </MainLayout>
+        }>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/posts/:postId" element={<Post />} />
+          <Route path="/community/:communityId" element={<Community />} />
+          <Route path="/community/:communityId/members" element={<CommunityMemberList />} />
+          <Route path="/create-post" element={<PostForm />} />
+          <Route path="/edit-profile" element={<EditProfileForm />} />
+          <Route path="/users/:userId" element={<UserProfile />} />
+          <Route path="/users/:userId/followers" element={<UserFollowerList />} />
+          <Route path="/users/:userId/following" element={<UserFollowingList />} />
+          <Route path="/users/:userId/ratings" element={<RatingList />} />
+          <Route path="/users/:userId/ratings/submit" element={<RatingForm />}></Route>
+          <Route path="/" element={<Navigate replace to="/login" />} />
+          <Route path="/game-search" element={<GameSearch />} />
+          <Route path="/create-community/:gameId" element={<CreateCommunity />} />
+          <Route path="/community" element={<CommunityCardList />} />
+          <Route path="/users" element={<AllUserCardList />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
