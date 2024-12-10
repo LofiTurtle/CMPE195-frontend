@@ -3,10 +3,11 @@ import CommentInput from './CommentInput';
 import './CommentItem.css';
 import api from '../../Services/api';
 import {useSelector} from 'react-redux';
+import { AiFillLike } from 'react-icons/ai';
 
 
 const CommentItem = ({ comment, onReplySubmit }) => {
-    const [isCollapsed, setIsCollapsed] = useState(false); // State to track collapse status
+    const [isCollapsed, setIsCollapsed] = useState(true); // State to track collapse status
     const [showReplyInput, setShowReplyInput] = useState(false); // State to control reply input visibility
     const { currentUser, status, error } = useSelector((state) => state.user);
     const [liked, setLiked] = useState(comment.liked_by_current_user);
@@ -83,7 +84,7 @@ const CommentItem = ({ comment, onReplySubmit }) => {
                         onClick={toggleLike}
                         className={`like-btn ${liked ? 'liked' : ''}`}
                     >
-                        👍 {likesCount}
+                        <AiFillLike size="25" color="var(--secondary-bg)" /> {likesCount}
                     </button>
                 </div>
 
