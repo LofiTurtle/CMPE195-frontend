@@ -146,7 +146,7 @@
 }
 
 .like-btn.liked {
-    color: red; /* Highlight when liked */
+    color: var(--secondary-bg); /* Highlight when liked */
     font-weight: bold;
 }
 

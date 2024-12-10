@@ -3,6 +3,7 @@ import CommentInput from './CommentInput';
 import './CommentItem.css';
 import api from '../../Services/api';
 import {useSelector} from 'react-redux';
+import { AiFillLike } from 'react-icons/ai';
 
 
 const CommentItem = ({ comment, onReplySubmit }) => {
@@ -83,7 +84,7 @@ const CommentItem = ({ comment, onReplySubmit }) => {
                         onClick={toggleLike}
                         className={`like-btn ${liked ? 'liked' : ''}`}
                     >
-                        👍 {likesCount}
+                        <AiFillLike size="25" color="var(--secondary-bg)" /> {likesCount}
                     </button>
                 </div>
 
