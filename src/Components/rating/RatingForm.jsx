@@ -14,6 +14,7 @@ const RatingForm = () => {
   const [ratings, setRatings] = useState([]);
   const [description, setDescription] = useState('');
   const [receivingUser, setReceivingUser] = useState(false);
+  const [showMissingRatingError, setShowMissingRatingError] = useState(false);
 
   useEffect(() => {
     const getRatingFields = async () => {
@@ -52,6 +53,12 @@ const RatingForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (ratings.some(rating => rating.value === null)) {
+      setShowMissingRatingError(true);
+      return
+    }
+    setShowMissingRatingError(false);
+
     await api.createRating(userId, description, ratings);
     navigate(`/users/${userId}/ratings`);
   }
@@ -79,6 +86,7 @@ const RatingForm = () => {
                          readOnly={false}/>
             </div>
           ))}
+          {showMissingRatingError && (<p className={'text-red-600'}>All fields are required</p>)}
           <button type="submit">Submit rating</button>
         </form>
       </div>
