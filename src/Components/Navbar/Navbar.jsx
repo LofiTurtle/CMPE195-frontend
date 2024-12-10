@@ -12,16 +12,14 @@ import {
   PlusCircle,
   User
 } from 'lucide-react';
+import api from "../../Services/api.js";
 
 export const Navbar = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [communities, setCommunities] = useState([]);
-  const {
-  currentUser: {
-    id: userId, username
-  }, status } = useSelector((state) => state.user);
-  const userExists = !!userId && !!username;
+  const { currentUser, status } = useSelector((state) => state.user);
+  const userExists = !!currentUser?.id && !!currentUser?.username;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const accountMenuRef = useRef(null);
@@ -43,9 +41,8 @@ export const Navbar = () => {
   useEffect(() => {
     const fetchCommunities = async () => {
       try {
-        const response = await fetch('/api/me');
-        const data = await response.json();
-        setCommunities(data.user.communities || []);
+        const { communities } = await api.getCommunities();
+        setCommunities(communities);
       } catch (error) {
         console.error('Error fetching communities:', error);
       }
@@ -96,11 +93,11 @@ export const Navbar = () => {
                     setAccountMenuOpen(!accountMenuOpen);
                   }}
                 >
-                  <img src={`/api/users/${userId}/profile-picture`} alt="" className='w-9'/>
+                  <img src={`/api/users/${currentUser?.id}/profile-picture`} alt="" className='w-9'/>
                 </div>
                 <div className={`dropdown-menu ${accountMenuOpen ? 'active' : 'inactive'}`}>
                   <ul onClick={() => setAccountMenuOpen(false)}>
-                    <DropdownItem text="My Profile" to={`/users/${userId}`}/>
+                    <DropdownItem text="My Profile" to={`/users/${currentUser?.id}`}/>
                     <DropdownItem text="Logout" onClick={logout}/>
                   </ul>
                 </div>
