@@ -65,23 +65,27 @@ export function SignupForm(props) {
             placeholder="User Name" 
             value={userName} 
             onChange={e => setUserName(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" ? signUp() : null}
         />
         <Input 
             type="email" 
             placeholder="Email" 
             value={email}
             onChange={e => setEmail(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" ? signUp() : null}
          />
         <Input type="password" 
             placeholder="Password" 
             value={password} 
             onChange={e => setPassword(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" ? signUp() : null}
         />
         <Input 
             type="password" 
             placeholder="Confirm Password" 
             value={confirmPass} 
             onChange={e => setConfirmPass(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" ? signUp() : null}
         />
       </FormContainer>
       {!match && (
