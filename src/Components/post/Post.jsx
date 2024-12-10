@@ -4,6 +4,7 @@ import './Post.css'
 import CommentList from './CommentList';
 import api from '../../Services/api';
 import {useDispatch, useSelector} from 'react-redux';
+import {AiFillLike} from "react-icons/ai";
 
 function Post() {
   const { postId } = useParams();
@@ -39,6 +40,16 @@ function Post() {
     return <div>Loading...</div>;
   }
 
+  const handleLike = async (postId) => {
+    try {
+      await api.likePost(postId);
+      const { posts: updatedPosts } = await api.getCommunityPosts(communityId);
+      setPosts(updatedPosts);
+    } catch (error) {
+      console.error('Error liking the post:', error);
+    }
+  };
+
   return (
     <div>
       <div className="post-details">
@@ -47,7 +58,7 @@ function Post() {
         <Link to={`/community/${post.community.id}`}>
           {post.community.name}
         </Link>
-        <br />
+        <br/>
         <span>Author: </span>
         <span>
           <Link to={`/users/${post.author.id}`}>
@@ -58,12 +69,25 @@ function Post() {
           <div className="dropdown">
             <button className="dropdown-button">Edit</button>
             <div className="dropdown-content">
-              {/*<Link to={`/posts/${postId}/edit`}>Edit</Link>*/}
-              <DeletePost postId={postId} />
+              <DeletePost postId={postId}/>
             </div>
           </div>
         )}
+        {post.media === 'image' ? <img
+          className="post-image"
+          src={`/api/posts/${post.id}/image`}
+          alt={post.title}
+          onError={(e) => {
+            e.target.style.display = 'none';
+          }}
+        /> : null}
         <p>{post.content}</p>
+        <div className="post-actions">
+          <button onClick={() => handleLike(post.id)}>
+            <AiFillLike size="40" color="var(--secondary-bg)"/>
+            ({post.num_likes})
+          </button>
+        </div>
         <CommentList postId={postId}/>
       </div>
     </div>
