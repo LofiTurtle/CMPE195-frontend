@@ -17,7 +17,10 @@ export const Navbar = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [communities, setCommunities] = useState([]);
-  const { userId, username, status } = useSelector((state) => state.user);
+  const {
+  currentUser: {
+    id: userId, username
+  }, status } = useSelector((state) => state.user);
   const userExists = !!userId && !!username;
   const navigate = useNavigate();
   const dispatch = useDispatch();
