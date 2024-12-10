@@ -1,7 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import api from "../../Services/api.js";
-import RatingStarList from "./RatingStarList.jsx";
 import RatingRow from "./RatingRow.jsx";
 
 const Rating = ({ rating }) => {
@@ -24,8 +23,6 @@ const Rating = ({ rating }) => {
       {rating.fields.map(rating => (
         <div key={rating.name}>
           <RatingRow label={rating.name} value={rating.value} />
-          {/*<span className={'inline-block min-w-40'}>{caps(rating.name)}</span>*/}
-          {/*<RatingStarList value={rating.value} />*/}
         </div>
       ))}
       {rating.rating_user.id === currentUser?.id && (

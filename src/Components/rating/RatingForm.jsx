@@ -3,7 +3,6 @@ import api from "../../Services/api.js";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUser} from "../slices/userSlice.js";
-import RatingStarList from "./RatingStarList.jsx";
 import RatingRow from "./RatingRow.jsx";
 
 const RatingForm = () => {

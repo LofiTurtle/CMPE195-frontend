@@ -1,4 +1,3 @@
-import {useEffect, useState} from "react";
 import RatingStar from "./RatingStar.jsx";
 
 
