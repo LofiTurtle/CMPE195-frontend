@@ -38,7 +38,8 @@ const GameSearch = () => {
         />
         <button
           type="submit"
-          className="mt-2 w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="mt-2 w-full px-4 py-2 text-white rounded-md"
+style={{ backgroundColor: 'var(--secondary-bg)' }}
         >
           Search
         </button>

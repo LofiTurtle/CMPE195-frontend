@@ -76,6 +76,7 @@ nav ul li {
 /* Dropdown Menu */
 .menu-container {
   position: relative;
+  display: inline-block;  /* Added this */
 }
 
 .menu-trigger {
@@ -84,6 +85,8 @@ nav ul li {
   padding: 0.5rem;
   border-radius: 0.5rem;
   text-decoration: none;
+  display: flex;  /* Added this */
+  align-items: center;  /* Added this */
 }
 
 .menu-trigger:hover {
@@ -94,39 +97,37 @@ nav ul li {
   width: 32px;
   height: 32px;
   border-radius: 50%;
+  object-fit: cover;  /* Added this */
 }
 
 .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: 120%;  /* Changed from 100% to give some space */
   right: 0;
   width: 200px;
   padding: 10px 0;
   background: var(--secondary-bg);
   border-radius: 8px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-20px);
-  transition: all 0.3s ease;
   z-index: 1000;
+  display: none;  /* Changed from opacity/visibility */
 }
 
 .dropdown-menu.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+  display: block;  /* Changed from opacity/visibility */
 }
 
 .dropdown-menu ul {
   margin: 0;
   padding: 0;
+  list-style: none;  /* Added this */
 }
 
 .dropdown-menu ul li {
   list-style: none;
   padding: 10px 20px;
   margin: 0;
+  cursor: pointer;  /* Added this */
 }
 
 .dropdown-menu ul li:hover {
@@ -137,7 +138,7 @@ nav ul li {
   color: var(--primary-text-color);
   text-decoration: none;
   display: block;
-  cursor: pointer;
+  width: 100%;  /* Added this */
 }
 
 /* Sidebar Styling */

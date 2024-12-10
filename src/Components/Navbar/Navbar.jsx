@@ -9,17 +9,33 @@ import {
   Menu,
   Users,
   Gamepad2,
-  PlusCircle
+  PlusCircle,
+  User
 } from 'lucide-react';
 
 export const Navbar = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [communities, setCommunities] = useState([]);
-  const { userId } = useSelector((state) => state.user);
+  const { userId, username, status } = useSelector((state) => state.user);
+  const userExists = !!userId && !!username;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const accountMenuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (accountMenuRef.current && !accountMenuRef.current.contains(event.target) && accountMenuOpen) {
+        setAccountMenuOpen(false);
+      }
+    };
+    if (accountMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [accountMenuOpen]);
 
   useEffect(() => {
     const fetchCommunities = async () => {
@@ -58,7 +74,6 @@ export const Navbar = () => {
   return (
     <>
       <nav>
-        
         <Link to='/dashboard' className='Title'>Game Sphere</Link>
         <div className='search-bar'>
           <SearchBox />
@@ -69,19 +84,26 @@ export const Navbar = () => {
               New Post
             </button>
           </li>
-          <li>
-            <div className='menu-container' ref={accountMenuRef}>
-              <div className='menu-trigger' onClick={() => setAccountMenuOpen(!accountMenuOpen)}>
-                <img src={`/api/users/${userId}/profile-picture`} alt="" className='w-9' />
+          {userExists && (
+            <li>
+              <div className='menu-container' ref={accountMenuRef}>
+                <div
+                  className='menu-trigger'
+                  onClick={() => {
+                    setAccountMenuOpen(!accountMenuOpen);
+                  }}
+                >
+                  <img src={`/api/users/${userId}/profile-picture`} alt="" className='w-9'/>
+                </div>
+                <div className={`dropdown-menu ${accountMenuOpen ? 'active' : 'inactive'}`}>
+                  <ul onClick={() => setAccountMenuOpen(false)}>
+                    <DropdownItem text="My Profile" to={`/users/${userId}`}/>
+                    <DropdownItem text="Logout" onClick={logout}/>
+                  </ul>
+                </div>
               </div>
-              <div className={`dropdown-menu ${accountMenuOpen ? 'active' : 'inactive'}`}>
-                <ul>
-                  <DropdownItem text="My Profile" to={`/users/${userId}`} />
-                  <DropdownItem text="Logout" onClick={logout} />
-                </ul>
-              </div>
-            </div>
-          </li>
+            </li>
+          )}
         </ul>
       </nav>
 
@@ -94,7 +116,11 @@ export const Navbar = () => {
           </Link>
           <Link to="/community" className="sidebar-item">
             <Users size={20} />
-            All Communities
+            Communities
+          </Link>
+          <Link to="/users" className="sidebar-item">
+            <User size={20} />
+            Users
           </Link>
           <Link to="/game-search" className="sidebar-item">
             <Gamepad2 size={20} />
@@ -128,13 +154,12 @@ export const Navbar = () => {
 
       {/* Main content wrapper */}
       <div className={`main-content ${!sidebarOpen ? 'main-content-full' : ''}`}>
-        {/* Your existing content goes here */}
+       
       </div>
     </>
   );
 };
 
-// Keep your existing DropdownItem component
 function DropdownItem(props) {
   return (
     <li className='dropdown-item cursor-pointer'>

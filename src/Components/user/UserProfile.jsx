@@ -1,4 +1,3 @@
-// UserProfile.jsx
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -11,61 +10,61 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const { userId: currentUserId, username } = useSelector((state) => state.user);
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showDiscordLinkButton, setShowDiscordLinkButton] = useState(false);
   const [showDiscordDisconnectButton, setShowDiscordDisconnectButton] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const isOwnProfile = currentUserId === Number(userId);
-  const email = user?.profile.email;
 
   useEffect(() => {
-    const getUser = async () => {
+    const fetchData = async () => {
       try {
+        setLoading(true);
+        // Fetch user data
         const { user } = await api.getUser(userId);
         setUser(user);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getUser();
 
-    const getIsFollowing = async () => {
-      try {
+        // Fetch following status
         const { following } = await api.getRelationship(userId);
         setIsFollowing(following);
       } catch (error) {
-        console.log(error);
+        console.error('Error fetching user data:', error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
-    getIsFollowing();
+
+    fetchData();
   }, [userId, currentUserId]);
 
   useEffect(() => {
-    const checkDiscordLinkButton = async () => {
+    const checkDiscordButtons = async () => {
+      if (!user) return;
+      
       const currentId = await getCurrentUserId();
-      setShowDiscordLinkButton((user?.id === currentId || false) && !hasDiscordAccount(user));
+      const isCurrentUser = user.id === currentId;
+      const hasDiscord = hasDiscordAccount(user);
+      
+      setShowDiscordLinkButton(isCurrentUser && !hasDiscord);
+      setShowDiscordDisconnectButton(isCurrentUser && hasDiscord);
     };
 
-    const checkDiscordDisconnectButton = async () => {
-      const currentId = await getCurrentUserId();
-      setShowDiscordDisconnectButton((user?.id === currentId || false) && hasDiscordAccount(user));
-    };
-
-    if (user) {
-      checkDiscordLinkButton();
-      checkDiscordDisconnectButton();
-    }
+    checkDiscordButtons();
   }, [user]);
 
-  const handleDiscordDisconnect = () => {
-    fetch('/api/discord/disconnect', { method: 'POST' })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error disconnecting Discord account');
-        }
-        console.log('Disconnected from Discord');
-        navigate(0);
-      })
-      .catch(error => console.log(error));
+  const handleDiscordDisconnect = async () => {
+    try {
+      const response = await fetch('/api/discord/disconnect', { method: 'POST' });
+      if (!response.ok) {
+        throw new Error('Error disconnecting Discord account');
+      }
+      console.log('Disconnected from Discord');
+      navigate(0);
+    } catch (error) {
+      console.error('Error disconnecting Discord:', error);
+    }
   };
 
   const toggleFollowing = async () => {
@@ -73,57 +72,104 @@ const UserProfile = () => {
       if (isFollowing) {
         await api.unfollowUser(userId);
         setIsFollowing(false);
-        setUser({ ...user, follower_count: user.follower_count - 1 });
+        setUser(prev => ({ ...prev, follower_count: prev.follower_count - 1 }));
       } else {
         await api.followUser(userId);
         setIsFollowing(true);
-        setUser({ ...user, follower_count: user.follower_count + 1 });
+        setUser(prev => ({ ...prev, follower_count: prev.follower_count + 1 }));
       }
     } catch (error) {
-      console.log(error);
+      console.error('Error toggling follow status:', error);
     }
   };
 
+  if (loading) {
+    return <div className="loading">Loading user...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Error: {error}</div>;
+  }
+
   if (!user) {
-    return <h1>Loading user...</h1>;
+    return <div className="error">User not found</div>;
   }
 
   return (
-    <div>
-      <h1>{user.username}</h1>
-      {isOwnProfile ? (
-        <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
-      ) : (
-        <div>
-          <br />
-          <button onClick={toggleFollowing}>{isFollowing ? 'Unfollow' : 'Follow'} user</button>
-          <br />
+    <div className="user-profile">
+      <div className="profile-header">
+        <h1>{user.username}</h1>
+        {isOwnProfile ? (
+          <button 
+            className="edit-profile-btn"
+            onClick={() => navigate('/edit-profile')}
+          >
+            Edit Profile
+          </button>
+        ) : (
+          <button 
+            className="follow-btn"
+            onClick={toggleFollowing}
+          >
+            {isFollowing ? 'Unfollow' : 'Follow'} user
+          </button>
+        )}
+      </div>
+
+      <div className="profile-stats">
+        <p 
+          onClick={() => navigate(`/users/${userId}/followers`)} 
+          className="clickable"
+        >
+          {user.follower_count} followers
+        </p>
+        <p 
+          onClick={() => navigate(`/users/${userId}/following`)} 
+          className="clickable"
+        >
+          {user.following_count} following
+        </p>
+      </div>
+
+      <div className="profile-info">
+        <h2>Bio:</h2>
+        <p>{user.profile?.bio}</p>
+        {user.profile?.email && <p>Email: {user.profile.email}</p>}
+      </div>
+
+      {user.connected_accounts && user.connected_accounts.length > 0 && (
+        <div className="connected-accounts">
+          {user.connected_accounts.map((account, index) => (
+            <div key={index} className="account-card">
+              {account.profile_picture_url && (
+                <img src={account.profile_picture_url} alt={`${account.provider} profile`} />
+              )}
+              <p>Platform: {account.provider}</p>
+              <p>Account Username: {account.username}</p>
+            </div>
+          ))}
         </div>
       )}
-      <p onClick={() => navigate(`/users/${userId}/followers`)} style={{ cursor: 'pointer' }}>
-        {user.follower_count} followers
-      </p>
-      <p onClick={() => navigate(`/users/${userId}/following`)} style={{ cursor: 'pointer' }}>
-        {user.following_count} following
-      </p>
-      <h2>Bio:</h2>
-      <p>{user.profile.bio}</p> 
-      <p>Email: {user.profile.email}</p>
-      <br />
-      {user.connected_accounts.map((account, index) => (
-        <div key={index} style={{ border: '1px solid black', padding: '10px' }}>
-          <img src={account.profile_picture_url} alt="" />
-          <p>Platform: {account.provider}</p>
-          <p>Account Username: {account.username}</p>
-        </div>
-      ))}
-      <br />
-      {showDiscordLinkButton && <a href="/api/discord/connect">Link your Discord account</a>}
-      {showDiscordDisconnectButton && (
-        <button onClick={handleDiscordDisconnect}>Disconnect Discord Account</button>
-      )}
-      <br />
-      <PostList userId={userId} />
+
+      <div className="discord-controls">
+        {showDiscordLinkButton && (
+          <a href="/api/discord/connect" className="discord-link">
+            Link your Discord account
+          </a>
+        )}
+        {showDiscordDisconnectButton && (
+          <button 
+            onClick={handleDiscordDisconnect}
+            className="discord-disconnect"
+          >
+            Disconnect Discord Account
+          </button>
+        )}
+      </div>
+
+      <div className="posts-section">
+        <PostList userId={userId} />
+      </div>
     </div>
   );
 };
