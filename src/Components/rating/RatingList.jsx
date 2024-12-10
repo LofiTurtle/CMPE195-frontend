@@ -37,14 +37,18 @@ const RatingList = () => {
   }, [userId]);
 
   return (
-    <div>
-      <h1 className={'cursor-pointer'} onClick={() => navigate(`/users/${userId}`)}>Ratings for {receivingUser.username}</h1>
-      {ratings.map(rating => (
-        <div key={rating.id}>
-          <Rating rating={rating} />
-        </div>
-      ))}
+    <div className={'flex justify-center'}>
+      <div>
+        <h1 className={'cursor-pointer'} onClick={() => navigate(`/users/${userId}`)}>Ratings
+          for {receivingUser.username}</h1>
+        {ratings.map(rating => (
+          <div key={rating.id}>
+            <Rating rating={rating}/>
+          </div>
+        ))}
+      </div>
     </div>
+
   )
 }
 
