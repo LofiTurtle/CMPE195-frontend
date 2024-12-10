@@ -8,7 +8,6 @@ const RatingStarList = ({ value, onChange = (index) => {}, count = 5, readOnly =
   }
 
   const handleClick = (index) => {
-    console.log('calling onChange with index: ', index);
     onChange(index);
   };
 

@@ -45,12 +45,7 @@ const RatingForm = () => {
     getReceivingUser();
   }, [userId]);
 
-  const caps = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
   const updateRatingValue = (name, value) => {
-    console.log('updating rating:', name, value)
     setRatings(ratings.map(x => x.name === name ? { name, value } : x));
   }
 
