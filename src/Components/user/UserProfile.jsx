@@ -136,6 +136,7 @@ const UserProfile = () => {
 
       <div>
         <RatingSummary />
+        {currentUser.id !== Number(userId) && (<Link to={`/users/${userId}/ratings/submit`}>Rate this user</Link>)}
       </div>
 
       {user.connected_accounts && user.connected_accounts.length > 0 && (
