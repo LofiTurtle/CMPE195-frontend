@@ -3,6 +3,7 @@ import api from "../../Services/api.js";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUser} from "../slices/userSlice.js";
+import RatingRow from "./RatingRow.jsx";
 
 const RatingForm = () => {
   const { userId } = useParams();
@@ -49,6 +50,7 @@ const RatingForm = () => {
   }
 
   const updateRatingValue = (name, value) => {
+    console.log('updating rating:', name, value)
     setRatings(ratings.map(x => x.name === name ? { name, value } : x));
   }
 
@@ -64,33 +66,27 @@ const RatingForm = () => {
   }
 
   return (
-    <div>
-      <h1>Rate {receivingUser.username}</h1>
-      <form onSubmit={handleSubmit}>
+    <div className={'flex justify-center'}>
+      <div className={'w-full max-w-fit mx-auto p-4'}>
+        <h1>Rate {receivingUser.username}</h1>
+        <form onSubmit={handleSubmit}>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder={`Describe your experience with ${receivingUser.username}`}
           rows={4}
-          cols={50}
+          cols={30}
           required
         />
-        {ratings.map(rating => (
-          <div key={rating.name}>
-            <label htmlFor={rating.name} className={'inline-block min-w-40'}>{caps(rating.name)}</label>
-            <input
-              type="number"
-              min="1"
-              max="5"
-              id={rating.name}
-              value={rating.value}
-              onChange={(e) => updateRatingValue(rating.name, e.target.value)}
-              required
-            />
-          </div>
-        ))}
-        <button type="submit">Submit rating</button>
-      </form>
+          {ratings.map(rating => (
+            <div key={rating.name}>
+              <RatingRow label={rating.name} value={rating.value} onChange={(value) => updateRatingValue(rating.name, value + 1)}
+                         readOnly={false}/>
+            </div>
+          ))}
+          <button type="submit">Submit rating</button>
+        </form>
+      </div>
     </div>
   )
 }

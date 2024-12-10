@@ -43,8 +43,8 @@ export function LoginForm(props) {
   return (
     <BoxContainer>
       <FormContainer>
-        <Input type="username" placeholder="Username" onChange={e => setUsername(e.target.value)} value= {username}/>
-        <Input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} value= {password}/>
+        <Input type="username" placeholder="Username" onChange={e => setUsername(e.target.value)} onKeyDown={(e) => e.key === "Enter" ? login() : null} value= {username}/>
+        <Input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" ? login() : null} value= {password}/>
       </FormContainer>
       <Marginer direction="vertical" margin={10} />
       <MutedLink href="#">Forget your password?</MutedLink>

@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import api from "../../Services/api.js";
+import RatingRow from "./RatingRow.jsx";
 
 const Rating = ({ rating }) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -21,12 +22,11 @@ const Rating = ({ rating }) => {
       <p>{rating.description}</p>
       {rating.fields.map(rating => (
         <div key={rating.name}>
-          <span className={'inline-block min-w-40'}>{caps(rating.name)}</span>
-          <span>{rating.value}</span>
+          <RatingRow label={rating.name} value={rating.value} />
         </div>
       ))}
       {rating.rating_user.id === currentUser?.id && (
-        <div>
+        <div className={'pt-1'}>
           <button className={'inline mr-4 pr-2 pl-2 border rounded'} onClick={() => navigate(`/users/${rating.rated_user_id}/ratings/submit`)}>Edit</button>
           <button className={'inline mr-4 pr-2 pl-2 border border-black rounded bg-red-500'} onClick={handleDelete}>Delete</button>
         </div>
