@@ -17,7 +17,7 @@ const Rating = ({ rating }) => {
   }
 
   return (
-    <div className={'border m-2 p-4 rounded-lg'}>
+    <div className={'border m-2 p-4 rounded-lg bg-white'}>
       <h2 className={'cursor-pointer'} onClick={() => navigate(`/users/${rating.rating_user.id}`)}>By {rating.rating_user.username}</h2>
       <p>{rating.description}</p>
       {rating.fields.map(rating => (

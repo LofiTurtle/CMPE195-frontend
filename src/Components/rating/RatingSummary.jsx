@@ -31,7 +31,7 @@ const Rating = () => {
   }
 
   return (
-    <div className={'border m-2 p-4 rounded-lg cursor-pointer w-fit'} onClick={() => navigate(`/users/${userId}/ratings`)}>
+    <div className={'border m-2 p-4 rounded-lg cursor-pointer w-fit bg-white'} onClick={() => navigate(`/users/${userId}/ratings`)}>
       {summary.fields.map(field => (
         <div key={field.name}>
           <RatingRow label={field.name} value={field.value} />
