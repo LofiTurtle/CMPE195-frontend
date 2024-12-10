@@ -9,9 +9,27 @@ const CommentItem = ({ comment, onReplySubmit }) => {
     const [isCollapsed, setIsCollapsed] = useState(false); // State to track collapse status
     const [showReplyInput, setShowReplyInput] = useState(false); // State to control reply input visibility
     const { currentUser, status, error } = useSelector((state) => state.user);
+    const [liked, setLiked] = useState(comment.liked_by_current_user);
+    const [likesCount, setLikesCount] = useState(comment.num_likes);
 
     const toggleCollapse = () => {
         setIsCollapsed(!isCollapsed); // Toggle the collapse state
+    };
+
+    const toggleLike = async () => {
+        try {
+            if (liked) {
+                await api.unlikeComment(comment.id); // Call API to unlike the comment
+                setLiked(false);
+                setLikesCount((prev) => prev - 1);
+            } else {
+                await api.likeComment(comment.id); // Call API to like the comment
+                setLiked(true);
+                setLikesCount((prev) => prev + 1);
+            }
+        } catch (error) {
+            console.error('Error toggling like:', error);
+        }
     };
 
     const handleReplySubmit = (replyContent) => {
@@ -58,6 +76,14 @@ const CommentItem = ({ comment, onReplySubmit }) => {
                         className="reply-btn"
                     >
                         Reply
+                    </button>
+
+                    {/* Like Button */}
+                    <button
+                        onClick={toggleLike}
+                        className={`like-btn ${liked ? 'liked' : ''}`}
+                    >
+                        👍 {likesCount}
                     </button>
                 </div>
 

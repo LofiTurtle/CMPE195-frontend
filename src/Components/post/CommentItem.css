@@ -133,3 +133,24 @@
 .comment-input button[type="button"]:hover {
     background-color: #c82333; /* Darker red on hover */
 }
+
+.like-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.like-btn.liked {
+    color: red; /* Highlight when liked */
+    font-weight: bold;
+}
+
+.like-btn:hover {
+    opacity: 0.8;
+}
+

@@ -271,7 +271,11 @@ const api = {
   getRatingSummary: async (receiverUserId) => {
     const response = await axiosApi.get(`/ratings/${receiverUserId}/summary`);
     return response.data;
-  }
+  },
+
+  likeComment: (commentId) => axiosApi.post(`/comments/${commentId}/like`),
+
+  unlikeComment: (commentId) => axiosApi.post(`/comments/${commentId}/unlike`),
 };
 
 
