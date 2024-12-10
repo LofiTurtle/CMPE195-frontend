@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 
 
 const CommentItem = ({ comment, onReplySubmit }) => {
-    const [isCollapsed, setIsCollapsed] = useState(false); // State to track collapse status
+    const [isCollapsed, setIsCollapsed] = useState(true); // State to track collapse status
     const [showReplyInput, setShowReplyInput] = useState(false); // State to control reply input visibility
     const { currentUser, status, error } = useSelector((state) => state.user);
     const [liked, setLiked] = useState(comment.liked_by_current_user);
