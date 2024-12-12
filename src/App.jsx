@@ -20,6 +20,7 @@ import CommunityCardList from "./Components/post/CommunityCardList.jsx";
 import AllUserCardList from "./Components/user/AllUserCardList.jsx";
 import RatingForm from "./Components/rating/RatingForm.jsx";
 import RatingList from "./Components/rating/RatingList.jsx";
+import EditPasswordForm from "./Components/accountBox/EditPasswordForm.jsx";
 
 
 const AppContainer = styled.div`
@@ -71,6 +72,7 @@ function App() {
           <Route path="/community/:communityId/members" element={<CommunityMemberList />} />
           <Route path="/create-post" element={<PostForm />} />
           <Route path="/edit-profile" element={<EditProfileForm />} />
+          <Route path="/edit-password" element={<EditPasswordForm />} />
           <Route path="/users/:userId" element={<UserProfile />} />
           <Route path="/users/:userId/followers" element={<UserFollowerList />} />
           <Route path="/users/:userId/following" element={<UserFollowingList />} />

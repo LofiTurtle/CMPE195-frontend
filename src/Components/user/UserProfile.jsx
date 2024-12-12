@@ -97,12 +97,24 @@ const UserProfile = () => {
       <div className="profile-header">
         <h1>{user.username}</h1>
         {isOwnProfile ? (
-          <button
-            className="edit-profile-btn"
-            onClick={() => navigate('/edit-profile')}
-          >
-            Edit Profile
-          </button>
+          <>
+            <div>
+              <button
+                className="edit-profile-btn"
+                onClick={() => navigate('/edit-profile')}
+              >
+                Edit Profile
+              </button>
+            </div>
+            <div>
+              <button
+                className="edit-password-btn"
+                onClick={() => navigate('/edit-password')}
+              >
+                Edit Password
+              </button>
+            </div>
+          </>
         ) : (
           <button
             className="follow-btn"
@@ -136,7 +148,9 @@ const UserProfile = () => {
 
       <div>
         <RatingSummary />
-        {currentUser.id !== Number(userId) && (<Link to={`/users/${userId}/ratings/submit`}>Rate this user</Link>)}
+        {currentUser.id !== Number(userId) && (
+          <Link to={`/users/${userId}/ratings/submit`}>Rate this user</Link>
+        )}
       </div>
 
       {user.connected_accounts && user.connected_accounts.length > 0 && (

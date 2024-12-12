@@ -11,7 +11,6 @@ const EditProfileForm = () => {
   const { currentUser, status, error } = useSelector((state) => state.user);
 
   const [newUsername, setNewUsername] = useState(currentUser.username || '');
-  const [newPassword, setNewPassword] = useState('');
   const [newBio, setNewBio] = useState(currentUser.profile.bio);
   const [image, setImage] = useState(null);
   const [formError, setFormError] = useState('');
@@ -19,12 +18,12 @@ const EditProfileForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!newUsername.trim() || !newPassword.trim()) {
-      setFormError('Username and Password are required.');
+    if (!newUsername.trim()) {
+      setFormError('Username are required.');
       return;
     }
 
-    await dispatch(updateUserProfile({ newUsername, newBio, newPassword, image }));
+    await dispatch(updateUserProfile({ newUsername, newBio, image }));
     navigate(`/users/${currentUser.id}`);
   };
 
@@ -56,17 +55,6 @@ const EditProfileForm = () => {
           />
         </div>
 
-        {/* Password Field */}
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
-        </div>
 
         {/* Profile Image Field */}
         <div className="form-group">
