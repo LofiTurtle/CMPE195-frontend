@@ -1,34 +1,25 @@
+// UserProfile.jsx
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
+import { hasDiscordAccount, getCurrentUserId } from '../../utils';
 import api from '../../Services/api';
 import PostList from '../post/PostList';
-import {fetchUser} from "../slices/userSlice.js";
-import RatingSummary from "../rating/RatingSummary.jsx";
 
 const UserProfile = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const { currentUser, status } = useSelector((state) => state.user);
+  const { userId: currentUserId, username } = useSelector((state) => state.user);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showDiscordLinkButton, setShowDiscordLinkButton] = useState(false);
   const [showDiscordDisconnectButton, setShowDiscordDisconnectButton] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-  const isOwnProfile = currentUser?.id === Number(userId);
-
-  const dispatch = useDispatch();
+  const isOwnProfile = currentUserId === Number(userId);
+  const email = user?.profile.email;
 
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchUser());
-    }
-
     const getUser = async () => {
       try {
-        setLoading(true);
-        // Fetch user data
         const { user } = await api.getUser(userId);
         setUser(user);
       } catch (error) {
@@ -42,26 +33,39 @@ const UserProfile = () => {
         const { following } = await api.getRelationship(userId);
         setIsFollowing(following);
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
+        console.log(error);
       }
     };
     getIsFollowing();
-  }, [dispatch, status, userId]);
+  }, [userId, currentUserId]);
 
-  const handleDiscordDisconnect = async () => {
-    try {
-      const response = await fetch('/api/discord/disconnect', { method: 'POST' });
-      if (!response.ok) {
-        throw new Error('Error disconnecting Discord account');
-      }
-      console.log('Disconnected from Discord');
-      navigate(0);
-    } catch (error) {
-      console.error('Error disconnecting Discord:', error);
+  useEffect(() => {
+    const checkDiscordLinkButton = async () => {
+      const currentId = await getCurrentUserId();
+      setShowDiscordLinkButton((user?.id === currentId || false) && !hasDiscordAccount(user));
+    };
+
+    const checkDiscordDisconnectButton = async () => {
+      const currentId = await getCurrentUserId();
+      setShowDiscordDisconnectButton((user?.id === currentId || false) && hasDiscordAccount(user));
+    };
+
+    if (user) {
+      checkDiscordLinkButton();
+      checkDiscordDisconnectButton();
     }
+  }, [user]);
+
+  const handleDiscordDisconnect = () => {
+    fetch('/api/discord/disconnect', { method: 'POST' })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error disconnecting Discord account');
+        }
+        console.log('Disconnected from Discord');
+        navigate(0);
+      })
+      .catch(error => console.log(error));
   };
 
   const toggleFollowing = async () => {
@@ -69,109 +73,57 @@ const UserProfile = () => {
       if (isFollowing) {
         await api.unfollowUser(userId);
         setIsFollowing(false);
-        setUser(prev => ({ ...prev, follower_count: prev.follower_count - 1 }));
+        setUser({ ...user, follower_count: user.follower_count - 1 });
       } else {
         await api.followUser(userId);
         setIsFollowing(true);
-        setUser(prev => ({ ...prev, follower_count: prev.follower_count + 1 }));
+        setUser({ ...user, follower_count: user.follower_count + 1 });
       }
     } catch (error) {
-      console.error('Error toggling follow status:', error);
+      console.log(error);
     }
   };
 
-  if (loading) {
-    return <div className="loading">Loading user...</div>;
-  }
-
-  if (error) {
-    return <div className="error">Error: {error}</div>;
-  }
-
   if (!user) {
-    return <div className="error">User not found</div>;
+    return <h1>Loading user...</h1>;
   }
 
   return (
-    <div className="user-profile">
-      <div className="profile-header">
-        <h1>{user.username}</h1>
-        {isOwnProfile ? (
-          <button
-            className="edit-profile-btn"
-            onClick={() => navigate('/edit-profile')}
-          >
-            Edit Profile
-          </button>
-        ) : (
-          <button
-            className="follow-btn"
-            onClick={toggleFollowing}
-          >
-            {isFollowing ? 'Unfollow' : 'Follow'} user
-          </button>
-        )}
-      </div>
-
-      <div className="profile-stats">
-        <p
-          onClick={() => navigate(`/users/${userId}/followers`)}
-          className="clickable"
-        >
-          {user.follower_count} followers
-        </p>
-        <p
-          onClick={() => navigate(`/users/${userId}/following`)}
-          className="clickable"
-        >
-          {user.following_count} following
-        </p>
-      </div>
-
-      <div className="profile-info">
-        <h2>Bio:</h2>
-        <p>{user.profile?.bio}</p>
-        {user.profile?.email && <p>Email: {user.profile.email}</p>}
-      </div>
-
-      <div>
-        <RatingSummary />
-        {currentUser.id !== Number(userId) && (<Link to={`/users/${userId}/ratings/submit`}>Rate this user</Link>)}
-      </div>
-
-      {user.connected_accounts && user.connected_accounts.length > 0 && (
-        <div className="connected-accounts">
-          {user.connected_accounts.map((account, index) => (
-            <div key={index} className="account-card">
-              {account.profile_picture_url && (
-                <img src={account.profile_picture_url} alt={`${account.provider} profile`} />
-              )}
-              <p>Platform: {account.provider}</p>
-              <p>Account Username: {account.username}</p>
-            </div>
-          ))}
+    <div>
+      <h1>{user.username}</h1>
+      {isOwnProfile ? (
+        <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
+      ) : (
+        <div>
+          <br />
+          <button onClick={toggleFollowing}>{isFollowing ? 'Unfollow' : 'Follow'} user</button>
+          <br />
         </div>
       )}
-
-      <div className="discord-controls">
-        {showDiscordLinkButton && (
-          <a href="/api/discord/connect" className="discord-link">
-            Link your Discord account
-          </a>
-        )}
-        {showDiscordDisconnectButton && (
-          <button
-            onClick={handleDiscordDisconnect}
-            className="discord-disconnect"
-          >
-            Disconnect Discord Account
-          </button>
-        )}
-      </div>
-
-      <div className="posts-section">
-        <PostList userId={userId} />
-      </div>
+      <p onClick={() => navigate(`/users/${userId}/followers`)} style={{ cursor: 'pointer' }}>
+        {user.follower_count} followers
+      </p>
+      <p onClick={() => navigate(`/users/${userId}/following`)} style={{ cursor: 'pointer' }}>
+        {user.following_count} following
+      </p>
+      <h2>Bio:</h2>
+      <p>{user.profile.bio}</p> 
+      <p>Email: {user.profile.email}</p>
+      <br />
+      {user.connected_accounts.map((account, index) => (
+        <div key={index} style={{ border: '1px solid black', padding: '10px' }}>
+          <img src={account.profile_picture_url} alt="" />
+          <p>Platform: {account.provider}</p>
+          <p>Account Username: {account.username}</p>
+        </div>
+      ))}
+      <br />
+      {showDiscordLinkButton && <a href="/api/discord/connect">Link your Discord account</a>}
+      {showDiscordDisconnectButton && (
+        <button onClick={handleDiscordDisconnect}>Disconnect Discord Account</button>
+      )}
+      <br />
+      <PostList userId={userId} />
     </div>
   );
 };
